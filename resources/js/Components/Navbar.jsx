@@ -58,12 +58,6 @@ export default function Navbar({ auth }) {
                 <Link href="/donasi" className={isActive('/donasi')}>
                     Donasi
                 </Link>
-
-                {auth?.user && (
-                    <Link href="/admin/dashboard" className="ml-4 rounded-md border border-green-600 px-3 py-1 text-green-700 hover:bg-green-50 transition">
-                        Dashboard
-                    </Link>
-                )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -81,9 +75,6 @@ export default function Navbar({ auth }) {
                         <Link href="/about" className={mobileActive('/about')}>Tentang</Link>
                         <Link href="/laporan" className={mobileActive('/laporan')}>Laporan Keuangan</Link>
                         <Link href="/donasi" className={mobileActive('/donasi')}>Donasi</Link>
-                        {auth?.user && (
-                            <Link href="/admin/dashboard" className={mobileActive('/admin/dashboard')}>Dashboard</Link>
-                        )}
                     </div>
                 </div>
             )}

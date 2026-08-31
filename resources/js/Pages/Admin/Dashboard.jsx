@@ -1,16 +1,14 @@
 import AdminLayout from '../../Layouts/AdminLayout';
 import { Head, Link } from '@inertiajs/react';
-import { TrendingUp, Users, AlertCircle, CheckCircle, Eye } from 'lucide-react';
+import { TrendingUp, Users, AlertCircle, CheckCircle, Eye, Wallet, Landmark } from 'lucide-react';
 
-// stats dan recentDonations diambil dari props yang dikirim AdminController
 export default function Dashboard({ stats, recentDonations }) {
-
-    // Konfigurasi Kartu Statistik (Menggunakan data asli)
     const statsConfig = [
-        { label: 'Total Donasi Masuk', val: stats.total_donation, icon: <TrendingUp size={24} />, color: 'bg-green-500' },
+        { label: 'Total Donasi Masuk', val: stats.total_donation, icon: <TrendingUp size={24} />, color: 'bg-emerald-500' },
+        { label: 'Total Pengeluaran', val: stats.total_pengeluaran, icon: <Wallet size={24} />, color: 'bg-red-500' },
+        { label: 'Saldo Akhir', val: stats.saldo_akhir, icon: <Landmark size={24} />, color: 'bg-blue-500' },
         { label: 'Perlu Verifikasi', val: `${stats.need_verification} Transaksi`, icon: <AlertCircle size={24} />, color: 'bg-yellow-500' },
-        { label: 'Total Donatur', val: `${stats.total_donatur} Orang`, icon: <Users size={24} />, color: 'bg-blue-500' },
-        { label: 'Program Aktif', val: `${stats.program_active} Program`, icon: <CheckCircle size={24} />, color: 'bg-purple-500' },
+        { label: 'Program Aktif', val: `${stats.program_active} Program`, icon: <CheckCircle size={24} />, color: 'bg-violet-500' },
     ];
 
     return (
@@ -23,16 +21,15 @@ export default function Dashboard({ stats, recentDonations }) {
                 <p className="text-gray-500">Selamat datang kembali, Admin.</p>
             </div>
 
-            {/* Kartu Statistik */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-10">
                 {statsConfig.map((item, idx) => (
-                    <div key={idx} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-                        <div className={`p-4 rounded-full text-white shadow-lg ${item.color}`}>
+                    <div key={idx} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
+                        <div className={`p-3 rounded-xl text-white shadow-md ${item.color}`}>
                             {item.icon}
                         </div>
-                        <div>
-                            <p className="text-sm text-gray-500 font-medium">{item.label}</p>
-                            <h3 className="text-xl font-bold text-gray-800">{item.val}</h3>
+                        <div className="min-w-0">
+                            <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">{item.label}</p>
+                            <h3 className="text-lg font-bold text-gray-800 truncate">{item.val}</h3>
                         </div>
                     </div>
                 ))}

@@ -33,9 +33,9 @@ class Kernel extends HttpKernel
         ],
     ];
 
-    protected $routeMiddleware = [
+    protected $middlewareAliases = [
         // default Laravel
-        'auth'       => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth'       => \App\Http\Middleware\Authenticate::class,
         'verified'   => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'guest'      => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,

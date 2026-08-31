@@ -17,10 +17,10 @@ class AdminSeeder extends Seeder
         Admin::updateOrCreate(
             ['email' => 'admin@minhaj.com'],
             [
-                'name' => 'Super Admin',
-                // Simpan password sebagai plain; model `Admin` memiliki cast 'password' => 'hashed'
-                // sehingga nilai ini akan di-hash otomatis saat disimpan.
+                'name' => 'Suhaeri',
                 'password' => 'password',
+                'role' => 'superadmin',
+                'status' => 'approved',
                 'email_verified_at' => now(),
             ]
         );

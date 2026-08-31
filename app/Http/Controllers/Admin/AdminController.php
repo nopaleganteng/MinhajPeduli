@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Donation;
+use App\Models\Expense;
 use App\Models\Program;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -16,15 +17,32 @@ use Illuminate\Validation\Rules\Password;
 
 class AdminController extends Controller
 {
+    private function programImageUrl(?string $imagePath): string
+    {
+        if (!$imagePath) {
+            return '/images/default.png';
+        }
+
+        if (filter_var($imagePath, FILTER_VALIDATE_URL)) {
+            return $imagePath;
+        }
+
+        return asset('storage/' . ltrim($imagePath, '/'));
+    }
+
     /**
      * Menampilkan Dashboard dengan Data Statistik Asli
      */
     public function dashboard()
     {
         $totalNominal = Donation::where('status', 'paid')->sum('nominal');
+        $totalPengeluaran = Expense::sum('nominal');
+        $saldoAkhir = $totalNominal - $totalPengeluaran;
 
         $stats = [
             'total_donation'    => 'Rp ' . number_format($totalNominal, 0, ',', '.'),
+            'total_pengeluaran' => 'Rp ' . number_format($totalPengeluaran, 0, ',', '.'),
+            'saldo_akhir'       => 'Rp ' . number_format($saldoAkhir, 0, ',', '.'),
             'need_verification' => Donation::where('status', 'pending')->count(),
             'total_donatur'     => Donation::where('status', 'paid')->distinct()->count('name'),
             'program_active'    => Program::count(),
@@ -279,7 +297,7 @@ class AdminController extends Controller
                 'collected_formatted' => 'Rp ' . number_format($collected, 0, ',', '.'),
                 'progress' => $percentage,
                 'status' => 'Aktif', // Anda bisa menambah kolom status di database jika perlu
-                'image' => $program->image_path ? asset('storage/' . $program->image_path) : '/images/default.png',
+                'image' => $this->programImageUrl($program->image_path),
             ];
         });
 
@@ -345,6 +363,228 @@ class AdminController extends Controller
 
         $program->save();
         return redirect()->route('admin.programs')->with('success', 'Program berhasil diperbarui!');
+    }
+
+    public function expenses(Request $request)
+    {
+        $query = Expense::query();
+
+        if ($request->filled('category') && $request->category !== 'all') {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('transaction_date', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('transaction_date', '<=', $request->end_date);
+        }
+
+        $sortBy = $request->input('sort_by', 'transaction_date');
+        $direction = $request->input('direction', 'desc');
+
+        if ($sortBy === 'nominal') {
+            $query->orderBy('nominal', $direction);
+        } else {
+            $query->orderBy('transaction_date', $direction)->orderBy('created_at', $direction);
+        }
+
+        $expenses = $query->get()->map(fn ($expense) => [
+            'id' => $expense->id,
+            'title' => $expense->title,
+            'category' => $expense->category,
+            'nominal' => (int) $expense->nominal,
+            'transaction_date' => $expense->transaction_date ? $expense->transaction_date->format('Y-m-d') : null,
+            'description' => $expense->description,
+        ]);
+
+        return Inertia::render('Admin/Expenses', [
+            'expenses' => $expenses,
+            'filters' => $request->only(['category', 'start_date', 'end_date', 'sort_by', 'direction']),
+        ]);
+    }
+
+    public function storeExpense(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
+            'nominal' => 'required|numeric|min:0',
+            'transaction_date' => 'required|date',
+            'description' => 'nullable|string',
+        ]);
+
+        Expense::create([
+            'title' => $validated['title'],
+            'category' => $validated['category'],
+            'nominal' => (int) $validated['nominal'],
+            'transaction_date' => $validated['transaction_date'],
+            'description' => $validated['description'] ?? null,
+        ]);
+
+        return redirect()->route('admin.expenses')->with('success', 'Pengeluaran berhasil ditambahkan.');
+    }
+
+    public function updateExpense(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
+            'nominal' => 'required|numeric|min:0',
+            'transaction_date' => 'required|date',
+            'description' => 'nullable|string',
+        ]);
+
+        $expense = Expense::findOrFail($id);
+        $expense->update([
+            'title' => $validated['title'],
+            'category' => $validated['category'],
+            'nominal' => (int) $validated['nominal'],
+            'transaction_date' => $validated['transaction_date'],
+            'description' => $validated['description'] ?? null,
+        ]);
+
+        return redirect()->route('admin.expenses')->with('success', 'Pengeluaran berhasil diperbarui.');
+    }
+
+    public function destroyExpense($id)
+    {
+        $expense = Expense::findOrFail($id);
+        $expense->delete();
+
+        return redirect()->route('admin.expenses')->with('success', 'Pengeluaran berhasil dihapus.');
+    }
+
+    public function requestAccessForm()
+    {
+        return Inertia::render('Admin/RequestAccess');
+    }
+
+    public function storeRequestAccess(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:admins,email',
+            'phone' => 'nullable|string|max:20',
+            'password' => ['required', 'min:8', 'confirmed'],
+            'role' => 'nullable|in:admin,superadmin',
+        ]);
+
+        Admin::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
+            'password' => $validated['password'],
+            'role' => $validated['role'] ?? 'admin',
+            'status' => Admin::STATUS_PENDING,
+        ]);
+
+        return redirect()->route('admin.login')->with('success', 'Pengajuan admin berhasil dikirim. Tunggu persetujuan Super Admin.');
+    }
+
+    public function users()
+    {
+        abort_unless(Auth::user()?->canManageUsers(), 403, 'Hanya superadmin yang dapat mengelola akun admin.');
+
+        $users = Admin::orderBy('created_at', 'desc')->get()->map(function ($admin) {
+            return [
+                'id' => $admin->id,
+                'name' => $admin->name,
+                'email' => $admin->email,
+                'phone' => $admin->phone,
+                'role' => $admin->role ?? 'admin',
+                'status' => $admin->status ?? Admin::STATUS_APPROVED,
+                'created_at' => $admin->created_at ? $admin->created_at->format('d M Y') : null,
+            ];
+        });
+
+        return Inertia::render('Admin/Users', [
+            'users' => $users,
+        ]);
+    }
+
+    public function storeUser(Request $request)
+    {
+        abort_unless(Auth::user()?->canManageUsers(), 403, 'Hanya superadmin yang dapat menambah admin.');
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:admins,email',
+            'password' => ['required', 'min:8', 'confirmed'],
+            'phone' => 'nullable|string|max:20',
+            'role' => 'required|in:admin,superadmin',
+        ]);
+
+        Admin::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+            'phone' => $validated['phone'] ?? null,
+            'role' => $validated['role'],
+            'status' => Admin::STATUS_APPROVED,
+        ]);
+
+        return redirect()->route('admin.users')->with('success', 'Admin baru berhasil ditambahkan.');
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        abort_unless(Auth::user()?->canManageUsers(), 403, 'Hanya superadmin yang dapat mengubah akun admin.');
+
+        $user = Admin::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:admins,email,' . $user->id,
+            'phone' => 'nullable|string|max:20',
+            'role' => 'required|in:admin,superadmin',
+        ]);
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->phone = $validated['phone'] ?? null;
+        $user->role = $validated['role'];
+        $user->save();
+
+        return redirect()->route('admin.users')->with('success', 'Data admin berhasil diperbarui.');
+    }
+
+    public function destroyUser($id)
+    {
+        abort_unless(Auth::user()?->canManageUsers(), 403, 'Hanya superadmin yang dapat menghapus akun admin.');
+
+        $user = Admin::findOrFail($id);
+
+        if ($user->id === Auth::id()) {
+            return redirect()->route('admin.users')->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+        }
+
+        $user->delete();
+
+        return redirect()->route('admin.users')->with('success', 'Admin berhasil dihapus.');
+    }
+
+    public function approveUser($id)
+    {
+        abort_unless(Auth::user()?->canManageUsers(), 403, 'Hanya superadmin yang dapat menyetujui akun admin.');
+
+        $user = Admin::findOrFail($id);
+        $user->status = Admin::STATUS_APPROVED;
+        $user->save();
+
+        return redirect()->route('admin.users')->with('success', 'Akun admin berhasil disetujui.');
+    }
+
+    public function rejectUser($id)
+    {
+        abort_unless(Auth::user()?->canManageUsers(), 403, 'Hanya superadmin yang dapat menolak akun admin.');
+
+        $user = Admin::findOrFail($id);
+        $user->status = Admin::STATUS_REJECTED;
+        $user->save();
+
+        return redirect()->route('admin.users')->with('success', 'Akun admin berhasil ditolak.');
     }
 
     public function donatur() { return Inertia::render('Admin/Donatur'); }

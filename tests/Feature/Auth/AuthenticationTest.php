@@ -39,3 +39,19 @@ test('users can logout', function () {
     $this->assertGuest();
     $response->assertRedirect('/');
 });
+
+test('admin can authenticate and is redirected to admin dashboard', function () {
+    $admin = \App\Models\Admin::create([
+        'name' => 'Admin Test',
+        'email' => 'admin@example.com',
+        'password' => bcrypt('password123'),
+    ]);
+
+    $response = $this->post('/admin/login', [
+        'email' => $admin->email,
+        'password' => 'password123',
+    ]);
+
+    $this->assertAuthenticatedAs($admin, 'admin');
+    $response->assertRedirect(route('admin.dashboard', absolute: false));
+});

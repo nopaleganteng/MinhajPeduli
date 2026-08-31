@@ -1,6 +1,6 @@
 import { Head } from "@inertiajs/react";
 import Navbar from "@/Components/Navbar";
-import { FileText, Mail, Phone, MapPin } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, FileText, Mail, Phone, MapPin, Wallet } from "lucide-react";
 
 // Helper Format Rupiah
 const formatRupiah = (number) => {
@@ -44,120 +44,97 @@ export default function Laporan({
         <>
             <Head title="Laporan Keuangan" />
 
-            {/* Wrapper Utama dengan Flex Column untuk Footer Sticky di Bawah */}
-            <div className="min-h-screen bg-gradient-to-b from-emerald-100 to-white text-slate-800 font-sans flex flex-col justify-between">
-                {/* --- BAGIAN KONTEN (NAVBAR & ISI) --- */}
+            <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-slate-50 text-slate-800 font-sans flex flex-col justify-between">
                 <div>
                     <Navbar auth={auth} />
 
-                    {/* HEADER SECTION (ANIMASI DIHAPUS DISINI) */}
-                    <section className="pt-32 pb-16 px-6 bg-emerald-900 text-white text-center rounded-b-[3rem] shadow-xl relative z-20">
-                        <h1 className="text-3xl md:text-4xl font-serif font-bold mb-3 tracking-wide">
-                            Transparansi Dana Umat
-                        </h1>
-                        <p className="text-emerald-200 text-lg max-w-2xl mx-auto font-light">
-                            Laporan keuangan terbuka, akuntabel, dan dapat
-                            diakses publik demi menjaga amanah donatur.
-                        </p>
+                    <section className="pt-28 pb-16 px-6 bg-gradient-to-r from-emerald-900 via-emerald-800 to-green-700 text-white text-center shadow-xl">
+                        <div className="max-w-4xl mx-auto">
+                            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/60 bg-white/10 px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase text-emerald-100">
+                                <Wallet size={14} /> Transparansi Dana
+                            </span>
+                            <h1 className="mt-6 text-3xl md:text-5xl font-serif font-bold tracking-wide">
+                                Transparansi Dana Umat
+                            </h1>
+                            <p className="mt-4 text-emerald-100 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                                Laporan keuangan terbuka, akuntabel, dan dapat diakses publik demi menjaga amanah donatur.
+                            </p>
+                        </div>
                     </section>
 
-                    {/* KONTEN UTAMA (ANIMASI WRAPPER DIHAPUS DISINI) */}
-                    <div className="max-w-6xl mx-auto px-6 -mt-10 relative z-30 pb-20">
-                        {/* KARTU RINGKASAN (HANYA BAGIAN INI YANG DI-ANIMASI) */}
+                    <div className="max-w-6xl mx-auto px-6 -mt-10 relative z-20 pb-20">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                             {[
                                 {
                                     label: "Total Pemasukan",
                                     val: summary.total_masuk,
                                     color: "text-emerald-600",
-                                    border: "border-emerald-500",
+                                    border: "border-emerald-200",
                                     bg: "bg-white",
+                                    icon: <ArrowDownLeft className="text-emerald-600" size={22} />,
                                 },
                                 {
                                     label: "Total Pengeluaran",
                                     val: summary.total_keluar,
                                     color: "text-red-600",
-                                    border: "border-red-500",
+                                    border: "border-red-200",
                                     bg: "bg-white",
+                                    icon: <ArrowUpRight className="text-red-600" size={22} />,
                                 },
                                 {
                                     label: "Saldo Saat Ini",
                                     val: summary.saldo_akhir,
                                     color: "text-blue-600",
-                                    border: "border-blue-500",
-                                    bg: "bg-white shadow-md",
+                                    border: "border-blue-200",
+                                    bg: "bg-white shadow-lg",
+                                    icon: <Wallet className="text-blue-600" size={22} />,
                                 },
                             ].map((item, idx) => (
-                                // Tambahkan class animate-fade-in-up dan style delay disini
                                 <div
                                     key={idx}
-                                    className={`${item.bg} p-6 rounded-2xl shadow-lg border-t-4 ${item.border} flex flex-col justify-center items-center text-center transform hover:-translate-y-1 transition duration-300 animate-fade-in-up`}
-                                    style={{
-                                        animationDelay: `${idx * 0.15}s`,
-                                        animationFillMode: "both",
-                                    }} // Delay bertingkat agar muncul bergantian
+                                    className={`${item.bg} p-5 rounded-2xl shadow-md border-t-4 ${item.border} transform hover:-translate-y-1 transition duration-300`}
                                 >
-                                    <div className="text-xs text-gray-500 uppercase font-bold tracking-widest mb-2">
-                                        {item.label}
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div className="text-xs text-gray-500 uppercase font-bold tracking-[0.18em]">
+                                            {item.label}
+                                        </div>
+                                        <div className="p-2 rounded-xl bg-gray-50">{item.icon}</div>
                                     </div>
-                                    <div
-                                        className={`text-2xl md:text-3xl font-bold ${item.color}`}
-                                    >
+                                    <div className={`text-2xl md:text-3xl font-bold ${item.color}`}>
                                         {formatRupiah(item.val)}
                                     </div>
                                 </div>
                             ))}
                         </div>
 
-                        {/* TABEL MUTASI (TIDAK DI-ANIMASI) */}
                         <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-                            <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+                            <div className="px-6 py-5 border-b border-gray-100 flex flex-col md:flex-row md:items-center md:justify-between gap-3 bg-gray-50">
                                 <div className="flex items-center gap-3">
                                     <div className="bg-emerald-100 p-2 rounded-lg">
-                                        <FileText
-                                            size={20}
-                                            className="text-emerald-600"
-                                        />
+                                        <FileText size={20} className="text-emerald-600" />
                                     </div>
-                                    <h3 className="font-bold text-gray-800 text-lg">
-                                        Mutasi Terakhir
-                                    </h3>
+                                    <h3 className="font-bold text-gray-800 text-lg">Mutasi Terakhir</h3>
                                 </div>
-                                <span className="text-xs font-medium text-gray-400">
+                                <span className="text-xs font-medium text-gray-500 bg-white px-3 py-1.5 rounded-full border border-gray-200">
                                     5 Transaksi Terakhir
                                 </span>
                             </div>
 
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left text-sm md:text-base">
-                                    <thead className="bg-emerald-50/50 text-gray-500">
+                                    <thead className="bg-emerald-50/60 text-gray-600">
                                         <tr>
-                                            <th className="px-6 py-4 font-semibold">
-                                                Tanggal
-                                            </th>
-                                            <th className="px-6 py-4 font-semibold">
-                                                Uraian Transaksi
-                                            </th>
-                                            <th className="px-6 py-4 font-semibold text-center">
-                                                Jenis
-                                            </th>
-                                            <th className="px-6 py-4 font-semibold text-right">
-                                                Nominal
-                                            </th>
+                                            <th className="px-6 py-4 font-semibold">Tanggal</th>
+                                            <th className="px-6 py-4 font-semibold">Uraian Transaksi</th>
+                                            <th className="px-6 py-4 font-semibold text-center">Jenis</th>
+                                            <th className="px-6 py-4 font-semibold text-right">Nominal</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-100">
                                         {mutasi.map((m) => (
-                                            <tr
-                                                key={m.id}
-                                                className="hover:bg-emerald-50/30 transition duration-150"
-                                            >
-                                                <td className="px-6 py-4 text-gray-500 whitespace-nowrap">
-                                                    {m.tanggal}
-                                                </td>
-                                                <td className="px-6 py-4 font-medium text-gray-800">
-                                                    {m.uraian}
-                                                </td>
+                                            <tr key={m.id} className="hover:bg-emerald-50/30 transition duration-150">
+                                                <td className="px-6 py-4 text-gray-500 whitespace-nowrap">{m.tanggal}</td>
+                                                <td className="px-6 py-4 font-medium text-gray-800">{m.uraian}</td>
                                                 <td className="px-6 py-4 text-center">
                                                     <span
                                                         className={`px-3 py-1 rounded-full text-xs font-bold ${
@@ -166,22 +143,15 @@ export default function Laporan({
                                                                 : "bg-red-100 text-red-700"
                                                         }`}
                                                     >
-                                                        {m.tipe === "masuk"
-                                                            ? "Masuk"
-                                                            : "Keluar"}
+                                                        {m.tipe === "masuk" ? "Masuk" : "Keluar"}
                                                     </span>
                                                 </td>
                                                 <td
                                                     className={`px-6 py-4 font-bold text-right ${
-                                                        m.tipe === "masuk"
-                                                            ? "text-emerald-600"
-                                                            : "text-red-600"
+                                                        m.tipe === "masuk" ? "text-emerald-600" : "text-red-600"
                                                     }`}
                                                 >
-                                                    {m.tipe === "masuk"
-                                                        ? "+"
-                                                        : "-"}
-                                                    {formatRupiah(m.nominal)}
+                                                    {m.tipe === "masuk" ? "+" : "-"}{formatRupiah(m.nominal)}
                                                 </td>
                                             </tr>
                                         ))}

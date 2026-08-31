@@ -12,6 +12,19 @@ use Illuminate\Support\Facades\Storage; // Tambahkan ini untuk handle Storage
 
 class DonationController extends Controller
 {
+    private function programImageUrl(?string $imagePath): string
+    {
+        if (!$imagePath) {
+            return asset('images/default.png');
+        }
+
+        if (filter_var($imagePath, FILTER_VALIDATE_URL)) {
+            return $imagePath;
+        }
+
+        return asset('storage/' . ltrim($imagePath, '/'));
+    }
+
     public function index()
     {
         $programs = Program::with('donations')->get()->map(function ($program) {
@@ -29,8 +42,7 @@ class DonationController extends Controller
                 'target_amount' => $target_amount,
                 'collected_amount' => $collected_amount,
                 'percentage' => $percentage,
-                // Menggunakan asset storage agar gambar muncul konsisten
-                'image_path' => $program->image_path ? asset('storage/' . $program->image_path) : asset('images/default.png'),
+                'image_path' => $this->programImageUrl($program->image_path),
             ];
         });
 
@@ -70,7 +82,7 @@ class DonationController extends Controller
             'target_amount' => $program->target_amount,
             'collected_amount' => $collected_amount,
             'percentage' => $percentage,
-            'image_path' => $program->image_path ? asset('storage/' . $program->image_path) : asset('images/default.png'),
+            'image_path' => $this->programImageUrl($program->image_path),
         ];
 
         return Inertia::render('DetailDonasi', [

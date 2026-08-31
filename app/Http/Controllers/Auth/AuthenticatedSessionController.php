@@ -80,23 +80,35 @@ class AuthenticatedSessionController extends Controller
     /**
      * Tangani permintaan otentikasi Admin.
      */
-    public function storeAdmin(Request $request): RedirectResponse
+    public function storeAdmin(LoginRequest $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
-        ]);
+        $request->ensureIsNotRateLimited();
 
-        // Coba login menggunakan 'admin' guard
-        if (Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
+        $credentials = $request->only('email', 'password');
 
-            // Redirect ke rute admin.dashboard setelah berhasil
-            return redirect()->intended(route('admin.dashboard', absolute: false));
+        if (! Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
+            RateLimiter::hit($request->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => trans('auth.failed'),
+            ]);
         }
 
-        // Jika gagal
-        return back()->withInput()->with('error', 'Kredensial Admin tidak cocok.');
+        $admin = Auth::guard('admin')->user();
+
+        if (!$admin || !$admin->isApproved()) {
+            Auth::guard('admin')->logout();
+            RateLimiter::hit($request->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => 'Akun admin Anda masih menunggu persetujuan Super Admin.',
+            ]);
+        }
+
+        $request->session()->regenerate();
+        RateLimiter::clear($request->throttleKey());
+
+        return redirect()->intended(route('admin.dashboard', absolute: false));
     }
 
     /**

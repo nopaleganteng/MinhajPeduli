@@ -1,12 +1,14 @@
 import AdminLayout from "../../Layouts/AdminLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import { Plus, Edit, Trash2, Search, Filter, X } from "lucide-react";
 import { useState } from "react";
 
-export default function Program({ programs }) {
+export default function Program({ programs = [] }) {
     // State untuk mengontrol Modal
     const [showModal, setShowModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState("all");
+    const [showStatusMenu, setShowStatusMenu] = useState(false);
 
     // Inisialisasi Form Inertia
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -26,6 +28,26 @@ export default function Program({ programs }) {
             },
         });
     };
+
+    const handleDelete = (id) => {
+        if (!window.confirm("Apakah Anda yakin ingin menghapus program ini?")) {
+            return;
+        }
+
+        router.delete(route("admin.donasi.destroy", id), {
+            preserveScroll: true,
+        });
+    };
+
+    const visiblePrograms = (programs || []).filter((item) => {
+        const q = searchQuery.trim().toLowerCase();
+        const matchesText = !q || (item.title || "").toLowerCase().includes(q);
+        const matchesStatus =
+            statusFilter === "all" ||
+            (item.status || "").toLowerCase() === statusFilter.toLowerCase();
+
+        return matchesText && matchesStatus;
+    });
 
     return (
         <AdminLayout>
@@ -62,20 +84,45 @@ export default function Program({ programs }) {
                     />
                     <Search className="absolute left-3 top-2.5 text-gray-400 w-4 h-4" />
                 </div>
-                <button className="flex items-center gap-2 bg-gray-50 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 text-gray-700">
-                    <Filter size={16} /> Filter Status
-                </button>
+
+                <div className="relative">
+                    <button
+                        type="button"
+                        onClick={() => setShowStatusMenu((prev) => !prev)}
+                        className="flex items-center gap-2 bg-gray-50 border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 text-gray-700"
+                    >
+                        <Filter size={16} />
+                        {statusFilter === "all" ? "Filter Status" : `Status: ${statusFilter}`}
+                    </button>
+
+                    {showStatusMenu && (
+                        <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
+                            {[
+                                { value: "all", label: "Semua" },
+                                { value: "Aktif", label: "Aktif" },
+                            ].map((option) => (
+                                <button
+                                    key={option.value}
+                                    type="button"
+                                    onClick={() => {
+                                        setStatusFilter(option.value);
+                                        setShowStatusMenu(false);
+                                    }}
+                                    className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 ${
+                                        statusFilter === option.value ? "bg-green-50 text-green-700 font-semibold" : "text-gray-700"
+                                    }`}
+                                >
+                                    {option.label}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Grid Program (Kode asli Anda tetap dipertahankan) */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {programs
-                    .filter((p) => {
-                        const q = searchQuery.trim().toLowerCase();
-                        if (!q) return true;
-                        return (p.title || "").toLowerCase().includes(q);
-                    })
-                    .map((item) => (
+                {visiblePrograms.map((item) => (
                         <div
                             key={item.id}
                             className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col hover:shadow-md transition duration-300 group"
@@ -144,6 +191,8 @@ export default function Program({ programs }) {
                                         <Edit size={16} /> Edit
                                     </a>
                                     <button
+                                        type="button"
+                                        onClick={() => handleDelete(item.id)}
                                         className="flex-none p-2.5 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 transition tooltip"
                                         title="Hapus Program"
                                     >

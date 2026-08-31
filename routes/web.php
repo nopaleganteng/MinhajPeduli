@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\DonationController;
 use App\Models\Program;
 use App\Models\Donation;
+use App\Models\Expense;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -63,26 +64,44 @@ Route::get('/about', function () {
 
 // Halaman Laporan
 Route::get('/laporan', function () {
-    // Ringkasan keuangan sederhana berdasarkan data donasi yang sudah dibayar
     $total_masuk = Donation::where('status', 'paid')->sum('nominal');
-    // Jika belum ada modul pengeluaran, set 0 (bisa dikembangkan nanti)
-    $total_keluar = 0;
+    $total_keluar = Expense::sum('nominal');
     $saldo_akhir = $total_masuk - $total_keluar;
 
-    // Ambil 5 transaksi terakhir dari tabel donations, hanya yang sudah dibayar/verified (status = 'paid')
-    $mutasi = Donation::where('status', 'paid')
+    $donasiMutasi = Donation::where('status', 'paid')
         ->orderBy('created_at', 'desc')
         ->limit(5)
         ->get()
         ->map(function ($d) {
             return [
-                'id' => $d->id,
+                'id' => 'donasi-' . $d->id,
                 'tanggal' => $d->created_at->format('d M Y'),
                 'uraian' => 'Donasi - ' . ($d->name ?: 'Anonim') . ' (' . ($d->invoice_no ?? '-') . ')',
-                'tipe' => $d->status === 'paid' ? 'masuk' : 'masuk',
-                'nominal' => $d->nominal,
+                'tipe' => 'masuk',
+                'nominal' => (int) $d->nominal,
             ];
         });
+
+    $pengeluaranMutasi = Expense::orderBy('transaction_date', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->limit(5)
+        ->get()
+        ->map(function ($e) {
+            return [
+                'id' => 'expense-' . $e->id,
+                'tanggal' => $e->transaction_date ? $e->transaction_date->format('d M Y') : date('d M Y'),
+                'uraian' => $e->title,
+                'tipe' => 'keluar',
+                'nominal' => (int) $e->nominal,
+            ];
+        });
+
+    $mutasi = $donasiMutasi->merge($pengeluaranMutasi)
+        ->sortByDesc(function ($item) {
+            return strtotime($item['tanggal']);
+        })
+        ->take(5)
+        ->values();
 
     return Inertia::render('Laporan', [
         'summary' => [
@@ -147,6 +166,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'storeAdmin'])->name('admin.login.post');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroyAdmin'])->name('admin.logout');
 
+    Route::get('/request', [AdminController::class, 'requestAccessForm'])->name('admin.request.form');
+    Route::post('/request', [AdminController::class, 'storeRequestAccess'])->name('admin.request.store');
+
     Route::get('/forgot-password', [\App\Http\Controllers\Auth\PasswordResetLinkController::class, 'createAdmin'])->name('admin.password.request');
     Route::post('/forgot-password', [\App\Http\Controllers\Auth\PasswordResetLinkController::class, 'storeAdmin'])->name('admin.password.email');
     Route::get('/reset-password/{token}', [\App\Http\Controllers\Auth\NewPasswordController::class, 'createAdmin'])->name('admin.password.reset');
@@ -154,7 +176,16 @@ Route::prefix('admin')->group(function () {
 });
 
 // GROUP ADMIN (Membutuhkan Login)
-Route::middleware(['auth:admin', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::middleware('role:superadmin')->group(function () {
+        Route::get('/users', [AdminController::class, 'users'])->name('users');
+        Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
+        Route::put('/users/{id}', [AdminController::class, 'updateUser'])->name('users.update');
+        Route::delete('/users/{id}', [AdminController::class, 'destroyUser'])->name('users.destroy');
+        Route::post('/users/{id}/approve', [AdminController::class, 'approveUser'])->name('users.approve');
+        Route::post('/users/{id}/reject', [AdminController::class, 'rejectUser'])->name('users.reject');
+    });
 
     // --- RUTE PROGRAM ---
     Route::get('/programs/{id}/edit', [AdminController::class, 'editProgram'])->name('donasi.edit');
@@ -162,6 +193,12 @@ Route::middleware(['auth:admin', 'verified'])->prefix('admin')->name('admin.')->
     Route::delete('/programs/{id}', [AdminController::class, 'destroyProgram'])->name('donasi.destroy');
     Route::post('/programs', [AdminController::class, 'storeProgram'])->name('programs.store');
     Route::get('/programs', [AdminController::class, 'programs'])->name('programs');
+
+    // --- EXPENSES / LAPORAN KEUANGAN ---
+    Route::get('/expenses', [AdminController::class, 'expenses'])->name('expenses');
+    Route::post('/expenses', [AdminController::class, 'storeExpense'])->name('expenses.store');
+    Route::put('/expenses/{id}', [AdminController::class, 'updateExpense'])->name('expenses.update');
+    Route::delete('/expenses/{id}', [AdminController::class, 'destroyExpense'])->name('expenses.destroy');
 
     // --- DASHBOARD & DONATIONS ---
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
@@ -185,7 +222,7 @@ Route::middleware(['auth:admin', 'verified'])->prefix('admin')->name('admin.')->
     Route::put('/settings/password', [AdminController::class, 'updatePassword'])->name('settings.update-password');
 });
 
-// Auth Routes (Login/Register User Biasa)
+// Auth Routes (User Biasa / Donatur)
 require __DIR__.'/auth.php';
 
 Route::get('/login', fn () => Inertia::render('Auth/Login'))->name('login');

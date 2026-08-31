@@ -101,13 +101,9 @@ export default function Login() {
                                 {!processing && <ArrowRight className="ml-2 h-4 w-4" />}
                             </button>
 
-                            {/* Link Menuju Register */}
                             <div className="text-center mt-6 pt-4 border-t border-gray-200">
                                 <p className="text-sm text-gray-600">
-                                    Belum punya akun?{' '}
-                                    <Link href={route('register')} className="text-green-700 hover:text-green-900 font-bold hover:underline">
-                                        Daftar di sini
-                                    </Link>
+                                    Akses khusus untuk admin dan petugas operasional.
                                 </p>
                             </div>
 
