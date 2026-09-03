@@ -508,7 +508,7 @@ export default function DetailDonasi({ auth, program, donation }) {
                         </div>
                     </div>
                     <div className="bg-white py-4 text-center border-t border-green-200 text-xs text-gray-500">
-                        © 2025 MINHAJ PEDULI. ALL RIGHTS RESERVED.
+                        © {new Date().getFullYear()} MINHAJ PEDULI. ALL RIGHTS RESERVED.
                     </div>
                 </footer>
             </div>

@@ -15,7 +15,7 @@ class CheckRole
             abort(403, 'Role tidak ditentukan.');
         }
 
-        $user = $request->user();
+        $user = $request->user('admin') ?? $request->user();
 
         if (!$user || !in_array($user->role, $allowedRoles, true)) {
             abort(403, 'Anda tidak memiliki izin untuk mengakses halaman ini.');

@@ -22,7 +22,14 @@ class DonationController extends Controller
             return $imagePath;
         }
 
-        return asset('storage/' . ltrim($imagePath, '/'));
+        $clean = ltrim($imagePath, '/');
+
+        // File lama di public/images/... diserve langsung, upload baru via storage link
+        if (str_starts_with($clean, 'images/')) {
+            return asset($clean);
+        }
+
+        return asset('storage/' . $clean);
     }
 
     public function index()

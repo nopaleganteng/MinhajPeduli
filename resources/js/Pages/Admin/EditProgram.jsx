@@ -56,9 +56,13 @@ export default function EditProgram({ program }) {
                             className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
                             onChange={e => setData('image', e.target.files[0])}
                         />
-                        {program.image_path && (
-                            <img src={program.image_path.startsWith('http') ? program.image_path : `/storage/${program.image_path}`} alt="Preview" className="w-32 h-20 object-cover mt-2 rounded" />
-                        )}
+                        {program.image_path && (() => {
+                            const clean = program.image_path.replace(/^\//, '');
+                            const src = program.image_path.startsWith('http')
+                                ? program.image_path
+                                : (clean.startsWith('images/') ? `/${clean}` : `/storage/${clean}`);
+                            return <img src={src} alt="Preview" className="w-32 h-20 object-cover mt-2 rounded" />;
+                        })()}
                         {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image}</p>}
                     </div>
                     <div>

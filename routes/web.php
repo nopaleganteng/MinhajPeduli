@@ -36,7 +36,7 @@ Route::get('/', function () {
                 'target_amount' => $target_amount,
                 'collected_amount' => $collected_amount,
                 'percentage' => $percentage,
-                'image_path' => $program->image_path ? asset('storage/' . ltrim($program->image_path, '/')) : asset('images/default.png'),
+                'image_path' => $program->image_path ? (str_starts_with(ltrim($program->image_path, '/'), 'images/') ? asset(ltrim($program->image_path, '/')) : asset('storage/' . ltrim($program->image_path, '/'))) : asset('images/default.png'),
             ];
         });
 
@@ -130,7 +130,7 @@ Route::get('/donasi/form/{id}/{nominal}', function ($id, $nominal) {
     $programData = [
         'id' => $program->id,
         'title' => $program->title,
-        'img' => $program->image_path ? asset('storage/' . ltrim($program->image_path, '/')) : asset('images/default.png'),
+        'img' => $program->image_path ? (str_starts_with(ltrim($program->image_path, '/'), 'images/') ? asset(ltrim($program->image_path, '/')) : asset('storage/' . ltrim($program->image_path, '/'))) : asset('images/default.png'),
     ];
 
     return inertia('FormDonasi', [
@@ -225,6 +225,10 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 // Auth Routes (User Biasa / Donatur)
 require __DIR__.'/auth.php';
 
-Route::get('/login', fn () => Inertia::render('Auth/Login'))->name('login');
-Route::get('/register', fn () => Inertia::render('Auth/Register'))->name('register');
-Route::get('/forgot-password', fn () => Inertia::render('Auth/ForgotPassword', ['status' => session('status')]))->name('password.request');
+// DINONAKTIFKAN (bukan dihapus): halaman auth user dialihkan ke alur admin
+// Route::get('/login', fn () => Inertia::render('Auth/Login'))->name('login');
+// Route::get('/register', fn () => Inertia::render('Auth/Register'))->name('register');
+// Route::get('/forgot-password', fn () => Inertia::render('Auth/ForgotPassword', ['status' => session('status')]))->name('password.request');
+Route::get('/login', fn () => redirect()->route('admin.login'))->name('login');
+Route::get('/register', fn () => redirect()->route('admin.login'))->name('register');
+Route::get('/forgot-password', fn () => redirect()->route('admin.password.request'))->name('password.request');

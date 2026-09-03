@@ -1,7 +1,7 @@
 import AdminLayout from "../../Layouts/AdminLayout";
-import { Head, useForm, router } from "@inertiajs/react";
+import { Head, useForm, router, usePage } from "@inertiajs/react";
 import { Plus, Edit, Trash2, Search, Filter, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Program({ programs = [] }) {
     // State untuk mengontrol Modal
@@ -9,6 +9,14 @@ export default function Program({ programs = [] }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
     const [showStatusMenu, setShowStatusMenu] = useState(false);
+    const [showFlash, setShowFlash] = useState(true);
+    const { flash = {} } = usePage().props;
+
+    useEffect(() => {
+        if (flash.success || flash.error) {
+            setShowFlash(true);
+        }
+    }, [flash.success, flash.error]);
 
     // Inisialisasi Form Inertia
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -30,7 +38,7 @@ export default function Program({ programs = [] }) {
     };
 
     const handleDelete = (id) => {
-        if (!window.confirm("Apakah Anda yakin ingin menghapus program ini?")) {
+        if (!window.confirm("Program beserta seluruh donasinya akan dihapus permanen dan total donasi ikut berkurang. Lanjut?")) {
             return;
         }
 
@@ -119,6 +127,27 @@ export default function Program({ programs = [] }) {
                     )}
                 </div>
             </div>
+
+            {/* Notifikasi Flash */}
+            {showFlash && (flash.success || flash.error) && (
+                <div
+                    className={`mb-6 flex items-center justify-between gap-4 px-4 py-3 rounded-lg border text-sm font-medium ${
+                        flash.error
+                            ? "bg-red-50 border-red-200 text-red-700"
+                            : "bg-green-50 border-green-200 text-green-700"
+                    }`}
+                >
+                    <span>{flash.error || flash.success}</span>
+                    <button
+                        type="button"
+                        onClick={() => setShowFlash(false)}
+                        className="shrink-0 opacity-60 hover:opacity-100 transition"
+                        aria-label="Tutup notifikasi"
+                    >
+                        <X size={18} />
+                    </button>
+                </div>
+            )}
 
             {/* Grid Program (Kode asli Anda tetap dipertahankan) */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 // Tambahan Import untuk Update Password
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -27,7 +29,14 @@ class AdminController extends Controller
             return $imagePath;
         }
 
-        return asset('storage/' . ltrim($imagePath, '/'));
+        $clean = ltrim($imagePath, '/');
+
+        // File lama di public/images/... diserve langsung, upload baru via storage link
+        if (str_starts_with($clean, 'images/')) {
+            return asset($clean);
+        }
+
+        return asset('storage/' . $clean);
     }
 
     /**
@@ -600,12 +609,38 @@ class AdminController extends Controller
     public function destroyProgram($id) {
         $program = Program::findOrFail($id);
 
-        // Opsional: Hapus gambar dari storage jika ada
-        if ($program->image_path) {
-            Storage::disk('public')->delete($program->image_path);
+        try {
+            $donationCount = DB::transaction(function () use ($program) {
+                $donations = $program->donations()->get();
+                $count = $donations->count();
+
+                // Hapus file bukti pembayaran tiap donasi agar tidak jadi sampah
+                foreach ($donations as $donation) {
+                    if ($donation->proof_image) {
+                        Storage::disk('public')->delete($donation->proof_image);
+                    }
+                }
+
+                // Hapus seluruh donasi program (total dashboard/laporan otomatis berkurang)
+                $program->donations()->delete();
+
+                // Hapus gambar program dari storage jika ada
+                if ($program->image_path) {
+                    Storage::disk('public')->delete($program->image_path);
+                }
+
+                $program->delete();
+
+                return $count;
+            });
+        } catch (QueryException $e) {
+            return redirect()->back()->with('error', 'Program gagal dihapus. Silakan coba lagi.');
         }
 
-        $program->delete();
-        return redirect()->back()->with('success', 'Program berhasil dihapus');
+        $message = $donationCount > 0
+            ? "Program beserta {$donationCount} donasi terkait berhasil dihapus"
+            : 'Program berhasil dihapus';
+
+        return redirect()->back()->with('success', $message);
     }
 }

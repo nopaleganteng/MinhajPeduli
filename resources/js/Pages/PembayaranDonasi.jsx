@@ -333,7 +333,7 @@ export default function PembayaranDonasi({ auth, id, donationData }) {
                     </div>
                     <div className="bg-white py-4 text-center border-t border-green-200">
                         <p className="text-sm text-gray-700 font-medium flex items-center justify-center">
-                            <span className="text-lg mr-1">©</span> 2025 MINHAJ
+                            <span className="text-lg mr-1">©</span> {new Date().getFullYear()} MINHAJ
                             PEDULI. ALL RIGHTS RESERVED.
                         </p>
                     </div>
