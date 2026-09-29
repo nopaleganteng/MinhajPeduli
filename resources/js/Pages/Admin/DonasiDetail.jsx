@@ -150,7 +150,7 @@ export default function DonasiDetail({ donation }) {
                                     <div>
                                         <label className="inline-flex items-center gap-2 text-xs font-bold text-blue-600 bg-blue-50 px-3 py-2 rounded-lg cursor-pointer hover:bg-blue-100 transition">
                                             <Upload size={14} /> Ganti Bukti Pembayaran
-                                            <input type="file" className="hidden" onChange={handleImageUpload} accept="image/*" disabled={isProcessing} />
+                                            <input type="file" className="hidden" onChange={handleImageUpload} accept=".jpg,.jpeg,.png,image/jpeg,image/png" disabled={isProcessing} />
                                         </label>
                                     </div>
                                 </div>
@@ -160,7 +160,7 @@ export default function DonasiDetail({ donation }) {
                                     <p className="text-sm mb-4">Donatur belum mengunggah bukti pembayaran.</p>
                                     <label className="px-5 py-2.5 bg-green-600 text-white rounded-xl text-xs font-bold cursor-pointer hover:bg-green-700 transition shadow-sm">
                                         Unggah Bukti Sekarang
-                                        <input type="file" className="hidden" onChange={handleImageUpload} accept="image/*" disabled={isProcessing} />
+                                        <input type="file" className="hidden" onChange={handleImageUpload} accept=".jpg,.jpeg,.png,image/jpeg,image/png" disabled={isProcessing} />
                                     </label>
                                 </div>
                             )}

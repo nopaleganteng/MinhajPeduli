@@ -243,7 +243,7 @@ export default function KonfirmasiPembayaran({ auth, id, data, donation_id }) {
                                         id="payment-proof-upload"
                                         className="hidden"
                                         onChange={handleFileChange}
-                                        accept="image/*"
+                                        accept=".jpg,.jpeg,.png,image/jpeg,image/png"
                                     />
                                     <label
                                         htmlFor="payment-proof-upload"

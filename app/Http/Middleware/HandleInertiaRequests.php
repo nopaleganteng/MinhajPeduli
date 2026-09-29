@@ -38,6 +38,8 @@ class HandleInertiaRequests extends Middleware
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+            // Rekening yayasan (config/bank.php) tersedia di semua halaman
+            'bank' => fn () => config('bank'),
         ];
     }
 }
