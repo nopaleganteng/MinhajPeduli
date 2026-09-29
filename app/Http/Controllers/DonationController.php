@@ -22,7 +22,14 @@ class DonationController extends Controller
             return $imagePath;
         }
 
-        return asset('storage/' . ltrim($imagePath, '/'));
+        $clean = ltrim($imagePath, '/');
+
+        // File lama di public/images/... diserve langsung, upload baru via storage link
+        if (str_starts_with($clean, 'images/')) {
+            return asset($clean);
+        }
+
+        return asset('storage/' . $clean);
     }
 
     public function index()
@@ -116,9 +123,12 @@ class DonationController extends Controller
             'status' => 'pending',
         ]);
 
+        $program = Program::find($programId);
+
         // Redirect ke halaman pembayaran dengan data donasi
         return Inertia::render('PembayaranDonasi', [
             'id' => $programId,
+            'programTitle' => $program?->title,
             'donationData' => [
                 'id' => $donation->id,
                 'name' => $donation->name,
@@ -265,7 +275,7 @@ public function paymentForm(Request $request, $programId)
         // Validasi data yang masuk
         $request->validate([
             'donation_id' => 'required',
-            'proof_image' => 'required|image', // Menghapus batasan max 2mb sesuai permintaan
+            'proof_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'bank_owner'  => 'required|string',
             'payment_date'=> 'required|date',
         ]);
@@ -278,7 +288,7 @@ public function paymentForm(Request $request, $programId)
             $donation = Donation::findOrFail($request->donation_id);
             $donation->update([
                 'status' => 'pending', // Menunggu verifikasi admin
-                'proof_path' => $path,
+                'proof_image' => $path,
                 'bank_owner' => $request->bank_owner,
                 'bank_name' => $request->bank_name,
                 'payment_date' => $request->payment_date,

@@ -2,13 +2,20 @@ import { Head, Link, router } from "@inertiajs/react";
 import ProgressBar from "../Components/ProgressBar";
 import { MapPin, Phone, Mail } from "lucide-react";
 
-export default function PembayaranDonasi({ auth, id, donationData }) {
+export default function PembayaranDonasi({ auth, id, programTitle, bank, donationData }) {
     // Pastikan props diterima dengan benar
     const data = donationData || {};
 
-    // Data program (masih simulasi)
-    const programTitle = "Pembangunan Asrama Santri";
+    // Judul program asli dari controller (fallback ke simulasi bila kosong)
+    const programName = programTitle || "Pembangunan Asrama Santri";
     const programId = Number(id);
+
+    // Rekening yayasan dari shared props (config/bank.php)
+    const bankInfo = bank || {};
+    const bankName = bankInfo.bank_name || "BTN Syariah";
+    const accountNumber = bankInfo.account_number || "20022284222";
+    const accountName = bankInfo.account_name || "Yayasan Minhajul Misbah Al Jadid";
+    const qrisImage = bankInfo.qris_image || null;
 
     // Data Donatur dari Controller
     const donatur = {
@@ -27,6 +34,7 @@ export default function PembayaranDonasi({ auth, id, donationData }) {
     const totalTransfer = donatur.nominal; // KODE UNIK (uniqueNumberCode) TIDAK DITAMBAHKAN
 
     // 2. Kode Unik Kata (Hanya untuk Display)
+    const _programTitle = programName;
     const getInitials = (title) => {
         const words = title.split(/\s+/).filter((word) => word.length > 0);
         if (words.length >= 2) {
@@ -148,7 +156,7 @@ export default function PembayaranDonasi({ auth, id, donationData }) {
                                 Program Donasi
                             </div>
                             <div className="p-4 md:col-span-2 text-gray-800 font-semibold">
-                                {programTitle} (Kode:{" "}
+                                {programName} (Kode:{" "}
                                 <span className="text-blue-700 font-bold">
                                     {uniqueWordCode}
                                 </span>
@@ -177,28 +185,50 @@ export default function PembayaranDonasi({ auth, id, donationData }) {
                             <div className="p-4 md:col-span-2 text-gray-800">
                                 <div className="flex items-center gap-3 mb-2">
                                     <div className="text-2xl font-black text-blue-900 italic tracking-tighter">
-                                        BTN{" "}
-                                        <span className="text-[#bf9000] font-serif not-italic">
-                                            Syariah
-                                        </span>
+                                        {bankName}
                                     </div>
                                 </div>
                                 <div className="text-sm text-gray-600 mb-1">
-                                    An. Yayasan Minhajul Misbah Al Jadid.
+                                    An. {accountName}.
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex flex-wrap items-center gap-2">
                                     <span className="font-bold text-lg tracking-wider">
-                                        20022228422
+                                        {accountNumber}
                                     </span>
                                     <button
                                         onClick={() =>
-                                            copyToClipboard("20022228422")
+                                            copyToClipboard(accountNumber)
                                         }
                                         className="text-blue-600 hover:text-blue-800 text-sm underline cursor-pointer"
                                     >
                                         Salin nomor rekening
                                     </button>
                                 </div>
+                                {/* Buka aplikasi bank (Android) dengan nomor + nominal terisi */}
+                                <a
+                                    href={`intent://transfer?rek=${accountNumber}&nominal=${totalTransfer}#Intent;scheme=btnmobile;package=id.co.btn.mobile;end`}
+                                    className="mt-3 inline-block bg-blue-900 hover:bg-blue-800 text-white text-sm font-bold py-2 px-5 rounded-full transition"
+                                >
+                                    Buka BTN Mobile
+                                </a>
+                                <p className="text-xs text-gray-500 italic mt-2">
+                                    *Jika aplikasi tidak terbuka, salin nomor di
+                                    atas lalu transfer manual via m-banking /
+                                    ATM ke {bankName} {accountNumber}.
+                                </p>
+                                {qrisImage && (
+                                    <div className="mt-4 border border-gray-200 rounded-lg p-4 text-center bg-gray-50">
+                                        <p className="font-bold text-gray-700 mb-2">
+                                            Atau scan QRIS (dana langsung masuk
+                                            rekening yayasan)
+                                        </p>
+                                        <img
+                                            src={qrisImage}
+                                            alt="QRIS Yayasan"
+                                            className="w-56 h-56 object-contain mx-auto"
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -333,7 +363,7 @@ export default function PembayaranDonasi({ auth, id, donationData }) {
                     </div>
                     <div className="bg-white py-4 text-center border-t border-green-200">
                         <p className="text-sm text-gray-700 font-medium flex items-center justify-center">
-                            <span className="text-lg mr-1">©</span> 2025 MINHAJ
+                            <span className="text-lg mr-1">©</span> {new Date().getFullYear()} MINHAJ
                             PEDULI. ALL RIGHTS RESERVED.
                         </p>
                     </div>

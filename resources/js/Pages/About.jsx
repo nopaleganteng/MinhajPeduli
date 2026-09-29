@@ -1,6 +1,53 @@
 import { Head } from "@inertiajs/react";
 import Navbar from "@/Components/Navbar";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, Check, ShieldCheck, ScrollText, Users } from "lucide-react";
+
+const LEGALITAS_ORGAN = [
+    { nama: "Tn. Moh. Husni Tambrin", organ: "Pembina", jabatan: "Ketua" },
+    { nama: "Tn. Taufik Hidayat", organ: "Pembina", jabatan: "Anggota" },
+    { nama: "Tn. Idham Khalid, S.Sos.", organ: "Pengurus", jabatan: "Ketua" },
+    { nama: "Tn. Ahmad Juniawan, SHI.", organ: "Pengurus", jabatan: "Sekretaris" },
+    { nama: "Tn. Eduwar, SE.", organ: "Pengurus", jabatan: "Bendahara" },
+    { nama: "Tn. Ir. H. Engkus Kusnandar, M.Ag.", organ: "Pengawas", jabatan: "Ketua" },
+    { nama: "Tn. Malik", organ: "Pengawas", jabatan: "Anggota" },
+];
+
+const PENDIRI_LIST = [
+    {
+        nama: "Ustadz Taufik Syahrir",
+        img: "/images/ustadz1.jpeg",
+        organ: "Pembina",
+        jabatan: "Anggota Pembina",
+    },
+    {
+        nama: "Ustadz Muhammad Husni Thamrin S.SSI.",
+        img: "/images/ustadz2.jpeg",
+        organ: "Pembina",
+        jabatan: "Ketua Pembina",
+    },
+    {
+        nama: "Ustadz Idham Khalid",
+        img: "/images/ustadz3.jpeg",
+        organ: "Pengurus",
+        jabatan: "Ketua Pengurus",
+    },
+];
+
+const LEGALITAS_PENDIRI = [
+    "Tn. Moh. Husni Tambrin",
+    "Tn. Taufik Hidayat",
+    "Tn. Idham Khalid, S.Sos.",
+];
+
+const MISI_LIST = [
+    "Menanamkan nilai-nilai keimanan dan ketaqwaan kepada Allah SWT.",
+    "Mengamalkan Al Qur'an dan Sunnah Rasulullah SAW.",
+    "Membudayakan berkata sopan, tawadhu', qana'ah, saling menghargai dan saling membantu.",
+    "Meningkatkan kemauan dan kemampuan berkomunikasi secara lisan dan tulisan.",
+    "Mempersiapkan peserta didik menjadi Hafizh Al Qur'an.",
+    "Menanamkan nilai keimanan dan ketakwaan serta berakhlak mulia melalui pengamalan ajaran Islam Ahli Sunnah Wal Jama'ah.",
+    "Menanamkan nilai-nilai spiritual, intelektual, emosional untuk menjadi manusia yang terampil, kreatif dan inovatif.",
+];
 
 export default function About({ auth }) {
     return (
@@ -94,11 +141,9 @@ export default function About({ auth }) {
                             </div>
                             {/* Card Hover Lift */}
                             <div className="bg-green-600 text-white p-8 rounded-xl shadow-lg italic text-lg leading-relaxed transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-green-700 cursor-default">
-                                "Membangun pusat pendidikan Islam dengan model
-                                pesantren dengan dukungan bangunan fisik (gedung
-                                pendidikan dan masjid) yang berkualitas serta
-                                sarana dan prasarana modern yang mendukung
-                                proses pembelajaran para santri"
+                                "Terwujudnya generasi yang unggul dalam ilmu,
+                                mandiri, terampil dalam amal dan berakhlakul
+                                karimah"
                             </div>
                         </div>
 
@@ -113,21 +158,22 @@ export default function About({ auth }) {
                             </div>
 
                             <div className="grid md:grid-cols-2 gap-6">
-                                <div className="bg-green-600 text-white p-6 rounded-xl shadow-lg text-sm md:text-base text-justify transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-green-700">
-                                    Menjadikan pesantren (ma'had) sebagai tempat
-                                    yang memadai sekaligus menyenangkan bagi
-                                    para santri maupun para pendidik
-                                    (ustadz/guru) dalam proses belajar-mengajar,
-                                    baik menghafal al-Quran maupun mengkaji
-                                    kitab kuning.
-                                </div>
-                                <div className="bg-green-600 text-white p-6 rounded-xl shadow-lg text-sm md:text-base text-justify transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-green-700">
-                                    Menjadikan pesantren (ma'had) sebagai tempat
-                                    yang mendukung proses percepatan pembinaan
-                                    dan pengkaderan generasi penghapal dan
-                                    pejuang al-Quran, khususnya dari kalangan
-                                    anak-anak yatim dan dhuafa.
-                                </div>
+                                {MISI_LIST.map((misi, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-green-600 text-white p-6 rounded-xl shadow-lg text-sm md:text-base text-justify transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-green-700"
+                                    >
+                                        <div className="flex items-start gap-3">
+                                            <span className="shrink-0 w-7 h-7 rounded-full bg-white/20 flex items-center justify-center font-bold">
+                                                {index + 1}
+                                            </span>
+                                            <p className="flex items-start gap-2">
+                                                <Check className="w-5 h-5 shrink-0 mt-0.5" />
+                                                <span>{misi}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -174,56 +220,180 @@ export default function About({ auth }) {
                 {/* --- PENDIRI Yayasan Section --- */}
                 <section className="bg-green-700 py-16 px-6 text-white mt-10">
                     <div className="max-w-5xl mx-auto">
-                        <h2 className="text-center text-2xl font-bold uppercase mb-10 border-b border-green-500 inline-block pb-2 px-10">
-                            PENDIRI YAYASAN Al MINHAJ
-                        </h2>
+                        <div className="text-center animate-fade-in-up">
+                            <div className="flex items-center justify-center gap-4 mb-4">
+                                <div className="h-px w-20 bg-green-400"></div>
+                                <h2 className="text-2xl font-bold uppercase">
+                                    Pendiri Yayasan Al Minhaj
+                                </h2>
+                                <div className="h-px w-20 bg-green-400"></div>
+                            </div>
+                            <p className="text-green-200 font-medium mb-10">
+                                Dewan Pendiri Yayasan Minhajul Misbah Al Jadid
+                            </p>
+                        </div>
 
-                        <div className="flex flex-col md:flex-row items-center justify-center gap-12 xl:gap-24">
-                            <div className="bg-white p-3 shadow-2xl transform -rotate-2 hover:rotate-0 hover:scale-105 transition duration-500 ease-in-out cursor-pointer flex flex-col items-center w-72 xl:w-80">
-                                <div className="w-60 h-80 bg-gray-300 overflow-hidden relative group rounded-xl">
-                                    <img
-                                        src="/images/ustadz1.jpeg"
-                                        alt="Foto Ustadz 1"
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 rounded-xl"
-                                    />
-                                    <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors rounded-xl"></div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {PENDIRI_LIST.map((person, index) => (
+                                <div
+                                    key={index}
+                                    className="group bg-white rounded-2xl overflow-hidden shadow-xl transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                                >
+                                    <div className="relative aspect-[3/4] overflow-hidden bg-green-100">
+                                        <img
+                                            src={person.img}
+                                            alt={`Foto ${person.nama}`}
+                                            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                        />
+                                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-green-900/90 via-green-900/50 to-transparent pt-12 pb-4 px-5">
+                                            <span className="inline-block text-[11px] font-bold uppercase tracking-wider bg-green-500 text-white px-3 py-1 rounded-full mb-2">
+                                                {person.jabatan}
+                                            </span>
+                                            <h3 className="text-lg font-bold text-white leading-snug">
+                                                {person.nama}
+                                            </h3>
+                                            <p className="text-xs text-green-200 font-medium">
+                                                {person.organ}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="mt-4 text-center">
-                                    <h3 className="text-xl font-bold font-serif italic text-green-900">
-                                        Ustadz Taufik Syahrir
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* --- Legalitas Yayasan Section --- */}
+                <section className="bg-green-100 py-16 px-6">
+                    <div className="max-w-5xl mx-auto">
+                        <div className="text-center animate-fade-in-up">
+                            <div className="flex items-center justify-center gap-4 mb-6">
+                                <div className="h-px w-20 bg-green-700"></div>
+                                <h2 className="text-2xl font-bold text-green-800 uppercase">
+                                    Legalitas Yayasan
+                                </h2>
+                                <div className="h-px w-20 bg-green-700"></div>
+                            </div>
+                            <p className="text-green-900 font-medium mb-10">
+                                Yayasan Minhajul Misbah Al Jadid — disahkan
+                                oleh Kementerian Hukum dan HAM RI
+                            </p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-6 mb-6">
+                            <div className="bg-white p-6 rounded-xl shadow-lg border border-green-200 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <ShieldCheck className="w-7 h-7 text-green-700" />
+                                    <h3 className="text-lg font-bold text-green-800">
+                                        Pengesahan Kemenkumham
                                     </h3>
                                 </div>
+                                <ul className="text-sm text-green-900 space-y-2">
+                                    <li>
+                                        <span className="font-semibold">Nomor SK:</span>{" "}
+                                        AHU-0017870.AH.01.04.Tahun 2023
+                                    </li>
+                                    <li>
+                                        <span className="font-semibold">Tanggal:</span>{" "}
+                                        26 Oktober 2023
+                                    </li>
+                                    <li>
+                                        <span className="font-semibold">Daftar Yayasan:</span>{" "}
+                                        AHU-0025829.AH.01.12.Tahun 2023
+                                    </li>
+                                    <li>
+                                        <span className="font-semibold">Kedudukan:</span>{" "}
+                                        Jakarta Selatan
+                                    </li>
+                                    <li>
+                                        <span className="font-semibold">Kekayaan awal:</span>{" "}
+                                        Rp 25.000.000
+                                    </li>
+                                </ul>
                             </div>
-                            <div className="bg-white p-3 shadow-2xl transform rotate-1 hover:rotate-0 hover:scale-105 transition duration-500 ease-in-out cursor-pointer flex flex-col items-center w-72 xl:w-80">
-                                <div className="w-60 h-80 bg-gray-300 overflow-hidden relative group rounded-xl">
-                                    <img
-                                        src="/images/ustadz2.jpeg"
-                                        alt="Foto Ustadz 2"
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 rounded-xl"
-                                    />
-                                    <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors rounded-xl"></div>
-                                </div>
-                                <div className="mt-4 text-center">
-                                    <h3 className="text-xl font-bold font-serif italic text-green-900">
-                                        Ustadz Muhammad Husni Thamrin S.SSI.
+
+                            <div className="bg-white p-6 rounded-xl shadow-lg border border-green-200 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <ScrollText className="w-7 h-7 text-green-700" />
+                                    <h3 className="text-lg font-bold text-green-800">
+                                        Akta Notaris
                                     </h3>
                                 </div>
+                                <ul className="text-sm text-green-900 space-y-2">
+                                    <li>
+                                        <span className="font-semibold">Notaris:</span>{" "}
+                                        Bastriandi, S.H., M.Kn. (Kab. Cianjur)
+                                    </li>
+                                    <li>
+                                        <span className="font-semibold">Nomor Akta:</span>{" "}
+                                        11, tanggal 25 Oktober 2023
+                                    </li>
+                                    <li>
+                                        <span className="font-semibold">Domisili:</span>{" "}
+                                        Jl. H. Djoko RT 001 RW 003, Lenteng
+                                        Agung, Jagakarsa, Jakarta Selatan
+                                    </li>
+                                </ul>
                             </div>
-                            <div className="bg-white p-3 shadow-2xl transform rotate-3 hover:rotate-0 hover:scale-105 transition duration-500 ease-in-out cursor-pointer flex flex-col items-center w-72 xl:w-80">
-                                <div className="w-60 h-80 bg-gray-300 overflow-hidden relative group rounded-xl">
-                                    <img
-                                        src="/images/ustadz3.jpeg"
-                                        alt="Foto Ustadz 3"
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 rounded-xl"
-                                    />
-                                    <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors rounded-xl"></div>
-                                </div>
-                                <div className="mt-4 text-center">
-                                    <h3 className="text-xl font-bold font-serif italic text-green-900">
-                                        Ustadz Idham Khalid
-                                    </h3>
-                                </div>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-xl shadow-lg border border-green-200 mb-6 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                            <div className="flex items-center gap-3 mb-4">
+                                <Users className="w-7 h-7 text-green-700" />
+                                <h3 className="text-lg font-bold text-green-800">
+                                    Pendiri Yayasan
+                                </h3>
                             </div>
+                            <div className="grid md:grid-cols-3 gap-3">
+                                {LEGALITAS_PENDIRI.map((nama, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-green-600 text-white p-4 rounded-xl text-sm text-center font-medium"
+                                    >
+                                        {nama}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="bg-white p-6 rounded-xl shadow-lg border border-green-200 overflow-x-auto transform transition-all duration-300 hover:shadow-2xl">
+                            <div className="flex items-center gap-3 mb-4">
+                                <Users className="w-7 h-7 text-green-700" />
+                                <h3 className="text-lg font-bold text-green-800">
+                                    Susunan Organ Yayasan
+                                </h3>
+                            </div>
+                            <table className="w-full text-sm text-left">
+                                <thead>
+                                    <tr className="bg-green-700 text-white">
+                                        <th className="px-4 py-3 rounded-l-lg">Nama</th>
+                                        <th className="px-4 py-3">Organ</th>
+                                        <th className="px-4 py-3 rounded-r-lg">Jabatan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {LEGALITAS_ORGAN.map((row, index) => (
+                                        <tr
+                                            key={index}
+                                            className={
+                                                index % 2 === 0
+                                                    ? "bg-green-50"
+                                                    : "bg-white"
+                                            }
+                                        >
+                                            <td className="px-4 py-3 font-medium text-green-900">
+                                                {row.nama}
+                                            </td>
+                                            <td className="px-4 py-3 text-green-800">
+                                                {row.organ}
+                                            </td>
+                                            <td className="px-4 py-3 text-green-800">
+                                                {row.jabatan}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </section>
@@ -291,7 +461,7 @@ export default function About({ auth }) {
                     <div className="bg-white py-4 text-center border-t border-green-200">
                         <p className="text-sm text-gray-700 font-medium flex items-center justify-center">
                             <span className="text-lg mr-1">©</span>
-                            2025 MINHAJ PEDULI. ALL RIGHTS RESERVED.
+                            {new Date().getFullYear()} MINHAJ PEDULI. ALL RIGHTS RESERVED.
                         </p>
                     </div>
                 </footer>

@@ -261,7 +261,7 @@ export default function Donasi({ auth, allPrograms = [], totalStats = {} }) {
                     </div>
                     <div className="bg-white py-4 text-center border-t border-green-100">
                         <p className="text-sm text-gray-700 font-medium flex items-center justify-center">
-                            <span className="text-lg mr-1">©</span> 2025 MINHAJ PEDULI. ALL RIGHTS RESERVED.
+                            <span className="text-lg mr-1">©</span> {new Date().getFullYear()} MINHAJ PEDULI. ALL RIGHTS RESERVED.
                         </p>
                     </div>
                 </footer>

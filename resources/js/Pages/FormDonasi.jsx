@@ -1,9 +1,14 @@
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import ProgressBar from "../Components/ProgressBar";
 import { MapPin, Phone, Mail, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 function FormDonasi({ auth, program_id, program, nominal, errors = {} }) {
+    const { bank: bankProp } = usePage().props;
+    const bankInfo = bankProp || {};
+    const bankName = bankInfo.bank_name || "BTN Syariah";
+    const accountName =
+        bankInfo.account_name || "Yayasan Minhajul Misbah Al Jadid";
     const [formData, setFormData] = useState({
         sapaan: "Bapak",
         name: auth.user?.name || "",
@@ -288,19 +293,15 @@ function FormDonasi({ auth, program_id, program, nominal, errors = {} }) {
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2 mb-1">
                                                 <div className="font-bold text-blue-900 italic text-lg">
-                                                    BTN
-                                                </div>
-                                                <div className="bg-[#facc15] text-[10px] px-1 font-bold text-blue-900">
-                                                    Syariah
+                                                    {bankName}
                                                 </div>
                                             </div>
                                             <p className="text-xs text-gray-500">
-                                                An. Yayasan Minhajul Misbah Al
-                                                Jadid
+                                                An. {accountName}
                                             </p>
                                         </div>
                                         <span className="font-bold text-gray-500 text-sm">
-                                            BTN
+                                            {bankName}
                                         </span>
                                     </div>
                                 </div>
@@ -373,7 +374,7 @@ function FormDonasi({ auth, program_id, program, nominal, errors = {} }) {
                     </div>
                     <div className="bg-white py-4 text-center border-t border-green-200">
                         <p className="text-sm text-gray-700 font-medium flex items-center justify-center">
-                            <span className="text-lg mr-1">©</span> 2025 MINHAJ
+                            <span className="text-lg mr-1">©</span> {new Date().getFullYear()} MINHAJ
                             PEDULI. ALL RIGHTS RESERVED.
                         </p>
                     </div>

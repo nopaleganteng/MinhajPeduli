@@ -62,7 +62,7 @@ export default function Settings() {
         phone: '081234567890',
         address: 'Desa Kuripan, Kel. Kuripan, Kec. Ciseeng, Bogor, Jawa Barat',
         description: 'Lembaga sosial dan pendidikan yang bergerak di bidang pelayanan umat, donasi, dan pengelolaan program sosial.',
-        footer_text: '© 2025 MINHAJ PEDULI. ALL RIGHTS RESERVED.',
+        footer_text: `© ${new Date().getFullYear()} MINHAJ PEDULI. ALL RIGHTS RESERVED.`,
     });
 
     // --- Fungsi Submit Profil (Kode Asli Anda) ---

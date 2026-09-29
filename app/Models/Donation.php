@@ -24,6 +24,10 @@ class Donation extends Model
         'amount',           // Alias/Tambahan untuk perhitungan sum (agar cocok dengan logic Program)
         'unique_code',      // Kode unik (1-999)
         'status',           // Status: 'pending', 'paid', 'failed'
+        'proof_image',      // Path gambar bukti pembayaran (dipakai DonationController)
+        'bank_owner',       // Nama pemilik rekening pengirim
+        'bank_name',        // Nama bank pengirim
+        'payment_date',     // Tanggal transfer donatur
         'is_paid',          // Boolean untuk logic accessor di Program.php
         'payment_method',   // Bank Transfer, QRIS, dll
         'proof_of_payment'  // Path gambar bukti transfer

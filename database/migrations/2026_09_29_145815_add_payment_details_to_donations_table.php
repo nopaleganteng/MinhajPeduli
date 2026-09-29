@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('donations', function (Blueprint $table) {
-            $table->string('proof_image')->nullable()->after('program_id');
+            $table->string('bank_owner')->nullable()->after('proof_image');
+            $table->string('bank_name')->nullable()->after('bank_owner');
+            $table->date('payment_date')->nullable()->after('bank_name');
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('donations', function (Blueprint $table) {
-            $table->dropColumn('proof_image');
+            $table->dropColumn(['bank_owner', 'bank_name', 'payment_date']);
         });
     }
 };
