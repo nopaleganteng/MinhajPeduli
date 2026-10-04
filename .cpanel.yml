@@ -4,11 +4,15 @@
 #
 # SENGAJA dikecualikan (milik server, jangan timpa):
 # - public/index.php dan public/.htaccess (kustom docroot + blok PHP cPanel)
-# - public/build (upload manual via File Manager tiap ada ubahan frontend)
 # - public/storage (symlink/copy milik server)
 # - vendor/, node_modules/, .env, .git (tidak di-track / milik server)
+#
+# public/build: hasil `npm run build` di lokal, ikut ter-deploy tiap push
+# (folder lama dihapus dulu supaya file hash lama tidak menumpuk).
 deployment:
   tasks:
     - export DEPLOYPATH=/home/pesa7938/Laravell/
     - /bin/cp -Rf app bootstrap config database resources routes scripts tests artisan composer.json composer.lock vite.config.js tailwind.config.js postcss.config.js jsconfig.json phpunit.xml $DEPLOYPATH
+    - /bin/rm -rf /home/pesa7938/public_html/build /home/pesa7938/public_html/manual
+    - /bin/cp -Rf public/build public/manual /home/pesa7938/public_html/
     - /bin/cp -Rf public/images public/favicon.ico public/robots.txt /home/pesa7938/public_html/
