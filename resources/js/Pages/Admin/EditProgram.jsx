@@ -24,9 +24,9 @@ export default function EditProgram({ program }) {
     return (
         <AdminLayout>
             <Head title="Edit Program" />
-            <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-lg mt-10 p-8">
+            <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-lg mt-4 sm:mt-10 p-5 sm:p-8">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800">Edit Program Donasi</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Edit Program Donasi</h2>
                 </div>
                 <form onSubmit={submit} className="space-y-4">
                     <div>

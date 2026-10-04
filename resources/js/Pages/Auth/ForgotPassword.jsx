@@ -20,7 +20,7 @@ export default function ForgotPassword({ status }) {
             <div className="min-h-screen w-full flex bg-gray-50">
 
                 {/* --- BAGIAN KIRI: Form Forgot Password --- */}
-                <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 lg:p-12 relative">
+                <div className="w-full lg:w-1/2 flex flex-col justify-start items-center px-8 pt-24 pb-12 sm:justify-center sm:pt-8 lg:p-12 relative">
 
                     {/* Tombol Kembali ke Login */}
                     <Link href={route('login')} className="absolute top-8 left-8 flex items-center text-gray-500 hover:text-green-700 transition text-sm font-medium">

@@ -29,7 +29,7 @@ export default function Dashboard({ stats, recentDonations }) {
                         </div>
                         <div className="min-w-0">
                             <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">{item.label}</p>
-                            <h3 className="text-lg font-bold text-gray-800 truncate">{item.val}</h3>
+                            <h3 className="text-base sm:text-lg font-bold text-gray-800 break-words tabular-nums">{item.val}</h3>
                         </div>
                     </div>
                 ))}
@@ -48,28 +48,28 @@ export default function Dashboard({ stats, recentDonations }) {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm text-gray-600">
+                    <table className="min-w-[760px] w-full text-left text-sm text-gray-600">
                         <thead className="bg-green-50 text-green-800 uppercase font-bold text-xs border-b border-green-100">
                             <tr>
-                                <th className="px-6 py-4">Invoice</th>
-                                <th className="px-6 py-4">Donatur</th>
-                                <th className="px-6 py-4">Program</th>
-                                <th className="px-6 py-4">Jumlah</th>
-                                <th className="px-6 py-4">Status</th>
-                                <th className="px-6 py-4 text-center">Aksi</th>
+                                <th className="px-3 py-4 md:px-6">Invoice</th>
+                                <th className="px-3 py-4 md:px-6">Donatur</th>
+                                <th className="px-3 py-4 md:px-6">Program</th>
+                                <th className="px-3 py-4 md:px-6">Jumlah</th>
+                                <th className="px-3 py-4 md:px-6">Status</th>
+                                <th className="px-3 py-4 md:px-6 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                             {recentDonations && recentDonations.length > 0 ? (
                                 recentDonations.map((item, idx) => (
                                     <tr key={idx} className="hover:bg-gray-50 transition duration-150">
-                                        <td className="px-6 py-4 font-medium text-gray-900">
+                                        <td className="px-3 py-4 md:px-6 font-medium text-gray-900">
                                             {item.invoice_no}
                                         </td>
-                                        <td className="px-6 py-4 font-medium">{item.name}</td>
-                                        <td className="px-6 py-4 text-gray-500">{item.program}</td>
-                                        <td className="px-6 py-4 font-bold text-green-600">{item.amount}</td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-3 py-4 md:px-6 font-medium">{item.name}</td>
+                                        <td className="px-3 py-4 md:px-6 text-gray-500">{item.program}</td>
+                                        <td className="px-3 py-4 md:px-6 font-bold text-green-600">{item.amount}</td>
+                                        <td className="px-3 py-4 md:px-6">
                                             <span className={`px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1 ${
                                                 item.status === 'paid'
                                                 ? 'bg-green-100 text-green-700'
@@ -79,7 +79,7 @@ export default function Dashboard({ stats, recentDonations }) {
                                                 {item.status === 'paid' ? 'Success' : 'Pending'}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-center">
+                                        <td className="px-3 py-4 md:px-6 text-center">
                                             {/* TOMBOL AKSI: Mengarah ke showDonation di Controller */}
                                             <Link
                                                 href={route('admin.donations.show', item.id)}

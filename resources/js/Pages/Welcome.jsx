@@ -100,7 +100,7 @@ export default function Welcome({ auth, programsData, totalStats }) {
                 <section className="w-full">
                     <div className="grid md:grid-cols-2">
                         {/* Kolom Kiri */}
-                        <div className="bg-[#439c63] text-white p-10 md:p-16 flex flex-col justify-center">
+                        <div className="bg-[#439c63] text-white p-6 sm:p-10 md:p-16 flex flex-col justify-center">
                             <h2 className="text-3xl md:text-5xl font-bold mb-6 italic leading-tight tracking-wide">
                                 Membangun
                                 <br />
@@ -187,7 +187,7 @@ export default function Welcome({ auth, programsData, totalStats }) {
                                 key={idx}
                                 className="bg-green-700 py-6 px-4 rounded-xl shadow-lg transform hover:scale-105 transition duration-300"
                             >
-                                <div className="text-3xl font-bold mb-1">
+                                <div className="text-2xl sm:text-3xl font-bold mb-1 break-words tabular-nums">
                                     {item.val}
                                 </div>
                                 <div className="text-sm font-medium text-green-100">
@@ -247,7 +247,7 @@ export default function Welcome({ auth, programsData, totalStats }) {
                 {/* --- Program Donasi --- */}
                 <section className="py-12 px-4 max-w-6xl mx-auto" id="donasi">
                     <div className="text-center mb-10">
-                        <h2 className="text-3xl font-bold text-green-800 uppercase mb-2">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-green-800 uppercase mb-2">
                             Program Donasi
                         </h2>
                         <p className="font-medium text-gray-700">
@@ -268,7 +268,7 @@ export default function Welcome({ auth, programsData, totalStats }) {
                                 />
                                 <div className="p-5 flex flex-col flex-grow justify-between">
                                     <div>
-                                        <h3 className="text-xl font-bold text-gray-800 mb-3 font-serif">
+                                        <h3 className="text-xl font-bold text-gray-800 mb-3 font-serif break-words">
                                             {prog.title}
                                         </h3>
                                         <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
@@ -280,7 +280,7 @@ export default function Welcome({ auth, programsData, totalStats }) {
                                             ></div>
                                         </div>
                                     </div>
-                                    <div className="flex justify-between items-end mt-2">
+                                    <div className="flex flex-wrap items-end justify-between gap-3 mt-2">
                                         <div className="text-xs text-gray-600 space-y-1">
                                             <p>
                                                 Terkumpul:{" "}

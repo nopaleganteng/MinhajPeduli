@@ -117,17 +117,22 @@ class DonationController extends Controller
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'phone' => $validatedData['phone'],
-            'notes' => $validatedData['notes'],
+            'notes' => $validatedData['notes'] ?? null,
             'nominal' => $validatedData['nominal'],
             'unique_code' => $uniqueCode,
             'status' => 'pending',
         ]);
 
-        $program = Program::find($programId);
+        // PRG: redirect ke halaman GET agar aman di-refresh (tanpa dobel donasi)
+        return redirect()->route('donasi.bayar', $donation->id);
+    }
 
-        // Redirect ke halaman pembayaran dengan data donasi
+    public function paymentPage(Donation $donation)
+    {
+        $program = $donation->program;
+
         return Inertia::render('PembayaranDonasi', [
-            'id' => $programId,
+            'id' => $donation->program_id,
             'programTitle' => $program?->title,
             'donationData' => [
                 'id' => $donation->id,

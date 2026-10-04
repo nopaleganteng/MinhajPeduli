@@ -48,8 +48,18 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
     const displayedNumberCode = uniqueNumberCode;
     // --- AKHIR KOREKSI PENTING ---
 
-    const copyToClipboard = (text) => {
-        navigator.clipboard.writeText(text);
+    const copyToClipboard = async (text) => {
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch {
+            // Fallback konteks non-HTTPS / clipboard API ditolak browser
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            ta.remove();
+        }
         alert(`Berhasil menyalin: ${text}`);
     };
 
@@ -184,7 +194,7 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
                             </div>
                             <div className="p-4 md:col-span-2 text-gray-800">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <div className="text-2xl font-black text-blue-900 italic tracking-tighter">
+                                    <div className="text-xl sm:text-2xl font-black text-blue-900 italic tracking-tighter">
                                         {bankName}
                                     </div>
                                 </div>
@@ -195,26 +205,20 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
                                     <span className="font-bold text-lg tracking-wider">
                                         {accountNumber}
                                     </span>
-                                    <button
-                                        onClick={() =>
-                                            copyToClipboard(accountNumber)
-                                        }
-                                        className="text-blue-600 hover:text-blue-800 text-sm underline cursor-pointer"
-                                    >
-                                        Salin nomor rekening
-                                    </button>
                                 </div>
-                                {/* Buka aplikasi bank (Android) dengan nomor + nominal terisi */}
-                                <a
-                                    href={`intent://transfer?rek=${accountNumber}&nominal=${totalTransfer}#Intent;scheme=btnmobile;package=id.co.btn.mobile;end`}
-                                    className="mt-3 inline-block bg-blue-900 hover:bg-blue-800 text-white text-sm font-bold py-2 px-5 rounded-full transition"
+                                {/* Salin nomor rekening yayasan */}
+                                <button
+                                    onClick={() =>
+                                        copyToClipboard(accountNumber)
+                                    }
+                                    className="mt-3 inline-block bg-blue-900 hover:bg-blue-800 text-white text-sm font-bold py-2 px-5 rounded-full transition cursor-pointer"
                                 >
-                                    Buka BTN Mobile
-                                </a>
+                                    Salin Nomor Rekening
+                                </button>
                                 <p className="text-xs text-gray-500 italic mt-2">
-                                    *Jika aplikasi tidak terbuka, salin nomor di
-                                    atas lalu transfer manual via m-banking /
-                                    ATM ke {bankName} {accountNumber}.
+                                    *Klik tombol di atas untuk menyalin nomor,
+                                    lalu transfer manual via m-banking / ATM
+                                    ke {bankName} {accountNumber}.
                                 </p>
                                 {qrisImage && (
                                     <div className="mt-4 border border-gray-200 rounded-lg p-4 text-center bg-gray-50">
@@ -225,7 +229,7 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
                                         <img
                                             src={qrisImage}
                                             alt="QRIS Yayasan"
-                                            className="w-56 h-56 object-contain mx-auto"
+                                            className="w-44 sm:w-56 h-auto object-contain mx-auto"
                                         />
                                     </div>
                                 )}

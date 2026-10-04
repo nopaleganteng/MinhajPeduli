@@ -93,15 +93,15 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
             <Head title="Admin Dashboard" />
 
             <div className="py-6">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     {/* Navigation Tabs */}
                     <div className="bg-white rounded-t-lg shadow">
-                        <nav className="flex border-b">
+                        <nav className="flex border-b overflow-x-auto">
                             {['dashboard', 'users', 'submissions'].map(tab => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
-                                    className={`py-4 px-6 font-medium text-sm capitalize ${
+                                    className={`py-4 px-4 sm:px-6 font-medium text-sm capitalize whitespace-nowrap ${
                                         activeTab === tab
                                             ? 'border-b-2 border-blue-500 text-blue-600'
                                             : 'text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -141,10 +141,10 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                                 <div className="divide-y">
                                     {submissions?.slice(0, 5).map(sub => (
                                         <div key={sub.id} className="p-4 hover:bg-gray-50">
-                                            <div className="flex items-center justify-between">
-                                                <div>
-                                                    <p className="font-medium text-gray-900">{sub.user_name}</p>
-                                                    <p className="text-sm text-gray-500">{sub.type} - {sub.content}</p>
+                                            <div className="flex items-center justify-between gap-2 flex-wrap">
+                                                <div className="min-w-0">
+                                                    <p className="font-medium text-gray-900 truncate">{sub.user_name}</p>
+                                                    <p className="text-sm text-gray-500 truncate">{sub.type} - {sub.content}</p>
                                                 </div>
                                                 <div className="flex items-center space-x-3">
                                                     <span className="text-sm text-gray-500">
@@ -170,7 +170,7 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                     {activeTab === 'users' && (
                         <div className="bg-white rounded-b-lg shadow">
                             <div className="p-6 border-b">
-                                <div className="flex justify-between items-center mb-4">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between mb-4">
                                     <h3 className="text-lg font-semibold text-gray-900">Manajemen User & Role</h3>
                                     <button
                                         onClick={() => setShowAddUser(!showAddUser)}
@@ -251,14 +251,14 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
 
                             {/* Tabel Users */}
                             <div className="overflow-x-auto">
-                                <table className="w-full">
+                                <table className="min-w-[760px] w-full">
                                     <thead className="bg-gray-50 border-b">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y">
@@ -266,7 +266,7 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                                             <tr key={user.id} className="hover:bg-gray-50">
                                                 {editingUser?.id === user.id ? (
                                                     <>
-                                                        <td className="px-6 py-4">
+                                                        <td className="px-3 py-4 sm:px-6">
                                                             <input
                                                                 type="text"
                                                                 value={editingUser.name}
@@ -274,7 +274,7 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                                                                 className="px-2 py-1 border rounded w-full"
                                                             />
                                                         </td>
-                                                        <td className="px-6 py-4">
+                                                        <td className="px-3 py-4 sm:px-6">
                                                             <input
                                                                 type="email"
                                                                 value={editingUser.email}
@@ -282,7 +282,7 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                                                                 className="px-2 py-1 border rounded w-full"
                                                             />
                                                         </td>
-                                                        <td className="px-6 py-4">
+                                                        <td className="px-3 py-4 sm:px-6">
                                                             <select
                                                                 value={editingUser.role}
                                                                 onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
@@ -293,7 +293,7 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                                                                 ))}
                                                             </select>
                                                         </td>
-                                                        <td className="px-6 py-4">
+                                                        <td className="px-3 py-4 sm:px-6">
                                                             <select
                                                                 value={editingUser.status}
                                                                 onChange={(e) => setEditingUser({ ...editingUser, status: e.target.value })}
@@ -304,7 +304,7 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                                                                 ))}
                                                             </select>
                                                         </td>
-                                                        <td className="px-6 py-4">
+                                                        <td className="px-3 py-4 sm:px-6">
                                                             <div className="flex space-x-2">
                                                                 <button
                                                                     onClick={handleSaveEdit}
@@ -323,14 +323,14 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <td className="px-6 py-4 font-medium text-gray-900">{user.name}</td>
-                                                        <td className="px-6 py-4 text-gray-500">{user.email}</td>
-                                                        <td className="px-6 py-4">
+                                                        <td className="px-3 py-4 sm:px-6 font-medium text-gray-900">{user.name}</td>
+                                                        <td className="px-3 py-4 sm:px-6 text-gray-500">{user.email}</td>
+                                                        <td className="px-3 py-4 sm:px-6">
                                                             <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm capitalize">
                                                                 {user.role}
                                                             </span>
                                                         </td>
-                                                        <td className="px-6 py-4">
+                                                        <td className="px-3 py-4 sm:px-6">
                                                             <span className={`px-3 py-1 rounded-full text-sm capitalize ${
                                                                 user.status === 'active' ? 'bg-green-100 text-green-800' :
                                                                 user.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
@@ -339,7 +339,7 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                                                                 {user.status || 'active'}
                                                             </span>
                                                         </td>
-                                                        <td className="px-6 py-4">
+                                                        <td className="px-3 py-4 sm:px-6">
                                                             <div className="flex space-x-2">
                                                                 <button
                                                                     onClick={() => setEditingUser({ ...user })}
@@ -373,29 +373,29 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                                 <h3 className="text-lg font-semibold text-gray-900">Data Inputan</h3>
                             </div>
                             <div className="overflow-x-auto">
-                                <table className="w-full">
+                                <table className="min-w-[900px] w-full">
                                     <thead className="bg-gray-50 border-b">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipe</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Konten</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">Tipe</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">Konten</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                            <th className="px-3 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y">
                                         {submissions?.map(sub => (
                                             <tr key={sub.id} className="hover:bg-gray-50">
-                                                <td className="px-6 py-4 text-sm text-gray-900">#{sub.id}</td>
-                                                <td className="px-6 py-4 font-medium text-gray-900">{sub.user_name}</td>
-                                                <td className="px-6 py-4 text-gray-500">{sub.type}</td>
-                                                <td className="px-6 py-4 text-gray-500">{sub.content}</td>
-                                                <td className="px-6 py-4 text-gray-500">
+                                                <td className="px-3 py-4 sm:px-6 text-sm text-gray-900">#{sub.id}</td>
+                                                <td className="px-3 py-4 sm:px-6 font-medium text-gray-900">{sub.user_name}</td>
+                                                <td className="px-3 py-4 sm:px-6 text-gray-500">{sub.type}</td>
+                                                <td className="px-3 py-4 sm:px-6 text-gray-500">{sub.content}</td>
+                                                <td className="px-3 py-4 sm:px-6 text-gray-500">
                                                     {new Date(sub.created_at).toLocaleDateString('id-ID')}
                                                 </td>
-                                                <td className="px-6 py-4">
+                                                <td className="px-3 py-4 sm:px-6">
                                                     <select
                                                         value={sub.status}
                                                         onChange={(e) => handleUpdateStatus(sub.id, e.target.value)}
@@ -410,7 +410,7 @@ export default function AdminDashboard({ auth, users, submissions, stats }) {
                                                         <option value="rejected">Rejected</option>
                                                     </select>
                                                 </td>
-                                                <td className="px-6 py-4">
+                                                <td className="px-3 py-4 sm:px-6">
                                                     <button
                                                         onClick={() => router.visit(route('admin.submissions.show', sub.id))}
                                                         className="text-blue-600 hover:text-blue-800 text-sm font-medium"

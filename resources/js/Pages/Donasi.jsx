@@ -68,7 +68,7 @@ export default function Donasi({ auth, allPrograms = [], totalStats = {} }) {
                 <Navbar auth={auth} />
 
                 {/* --- Hero Section --- */}
-                <section className="relative h-[500px] flex items-center justify-center text-center px-4 overflow-hidden group">
+                <section className="relative min-h-[500px] py-16 flex items-center justify-center text-center px-4 overflow-hidden group">
                     <div className="absolute inset-0 z-0">
                         <img
                             src="/images/pesantren1.png"
@@ -105,7 +105,7 @@ export default function Donasi({ auth, allPrograms = [], totalStats = {} }) {
                                 key={idx}
                                 className="bg-green-700 text-white rounded-2xl py-8 px-4 text-center shadow-xl border-4 border-green-100/20 transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:bg-green-600 cursor-default"
                             >
-                                <div className="text-3xl md:text-4xl font-bold mb-1">{item.val}</div>
+                                <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 break-words">{item.val}</div>
                                 <div className="text-sm md:text-base font-medium opacity-90">{item.label}</div>
                             </div>
                         ))}
@@ -159,8 +159,8 @@ export default function Donasi({ auth, allPrograms = [], totalStats = {} }) {
 
                                     <div className="p-6 flex flex-col flex-grow justify-between">
                                         <div>
-                                            <h3 className="text-xl font-bold text-gray-800 mb-2 font-serif group-hover:text-green-700 transition-colors">{prog.title}</h3>
-                                            <div className="text-xs text-gray-500 mb-2 font-medium flex justify-between">
+                                            <h3 className="text-xl font-bold text-gray-800 mb-2 font-serif group-hover:text-green-700 transition-colors break-words">{prog.title}</h3>
+                                            <div className="text-xs text-gray-500 mb-2 font-medium flex flex-wrap gap-x-4 gap-y-1 justify-between">
                                                 <span>Terkumpul: <span className="font-bold text-green-700">{prog.current}</span></span>
                                                 <span>Target: {prog.target}</span>
                                             </div>
@@ -203,7 +203,7 @@ export default function Donasi({ auth, allPrograms = [], totalStats = {} }) {
                                 </div>
                             ))
                         ) : (
-                            <div className="col-span-2 text-center py-10 text-gray-500 italic bg-white/50 rounded-lg border border-dashed border-gray-300">
+                            <div className="col-span-1 md:col-span-2 text-center py-10 text-gray-500 italic bg-white/50 rounded-lg border border-dashed border-gray-300">
                                 Program tidak ditemukan.
                             </div>
                         )}

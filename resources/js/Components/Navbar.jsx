@@ -32,7 +32,7 @@ export default function Navbar({ auth }) {
     };
 
     return (
-        <nav className="flex justify-between items-center px-6 py-4 bg-green-100 shadow-sm sticky top-0 z-50">
+        <nav className="flex justify-between items-center px-4 sm:px-6 py-4 bg-green-100 shadow-sm sticky top-0 z-50">
             {/* Logo */}
             <div className="text-2xl font-bold text-green-700 italic flex items-center gap-2">
                 <Link href="/" className="flex items-center hover:opacity-80 transition">

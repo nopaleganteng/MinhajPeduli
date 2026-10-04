@@ -66,18 +66,18 @@ export default function Donations({ pendingDonations = {}, paidDonations = {}, f
 
         return list.data.map((donation) => (
             <tr key={donation.id} className="hover:bg-gray-50 transition border-b text-gray-800">
-                <td className="px-6 py-4 font-mono text-xs font-bold">{donation.invoice_no}</td>
-                <td className="px-6 py-4">
+                <td className="px-3 py-4 md:px-6 font-mono text-xs font-bold">{donation.invoice_no}</td>
+                <td className="px-3 py-4 md:px-6">
                     <div className="font-bold">{donation.name}</div>
                     <div className="text-xs text-gray-500">{donation.phone}</div>
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-3 py-4 md:px-6">
                     <span className="text-gray-700 truncate block max-w-[200px]" title={donation.program?.title}>
                         {donation.program?.title || '-'}
                     </span>
                 </td>
 
-                <td className="px-6 py-4">
+                <td className="px-3 py-4 md:px-6">
                     <div className="flex items-center justify-between min-w-[160px]">
                         {editingId === donation.id ? (
                             <div className="flex items-center gap-1">
@@ -115,8 +115,8 @@ export default function Donations({ pendingDonations = {}, paidDonations = {}, f
                     </div>
                 </td>
 
-                <td className="px-6 py-4 text-gray-600 text-sm">{donation.date}</td>
-                <td className="px-6 py-4 text-center">
+                <td className="px-3 py-4 md:px-6 text-gray-600 text-sm">{donation.date}</td>
+                <td className="px-3 py-4 md:px-6 text-center">
                     {type === 'pending' ? (
                         <div className="flex items-center justify-center gap-2">
                             <button
@@ -178,7 +178,7 @@ export default function Donations({ pendingDonations = {}, paidDonations = {}, f
                         </button>
 
                         {showFilterMenu && (
-                            <div className="absolute right-0 mt-2 w-72 bg-white border rounded-xl shadow-xl z-50 p-5">
+                            <div className="absolute right-0 mt-2 w-72 max-w-[calc(100vw-2rem)] bg-white border rounded-xl shadow-xl z-50 p-5">
                                 <div className="text-[10px] font-black text-gray-400 mb-3 uppercase tracking-[0.1em]">Urutkan Nominal</div>
                                 <div className="flex flex-col gap-1 mb-5">
                                     <button onClick={() => handleSort('desc')} className={`w-full text-left px-3 py-2 text-sm rounded-lg flex items-center gap-2 ${filters.direction === 'desc' ? 'bg-green-50 text-green-700 font-bold' : 'hover:bg-gray-50'}`}>
@@ -229,16 +229,16 @@ export default function Donations({ pendingDonations = {}, paidDonations = {}, f
             </div>
 
             {/* Tab Navigation */}
-            <div className="mb-6 flex p-1 bg-gray-100 rounded-xl w-fit">
+            <div className="mb-6 flex p-1 bg-gray-100 rounded-xl w-fit max-w-full overflow-x-auto">
                 <button
                     onClick={() => { setTab('pending'); router.get(route('admin.donations'), { ...filters, tab: 'pending' }, { preserveState: true }); }}
-                    className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${tab === 'pending' ? 'bg-white shadow text-green-600' : 'text-gray-500 hover:text-gray-700'}`}
+                    className={`px-4 sm:px-6 py-2.5 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${tab === 'pending' ? 'bg-white shadow text-green-600' : 'text-gray-500 hover:text-gray-700'}`}
                 >
                     Donasi Masuk <span className="ml-2 px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-[10px]">{pendingDonations?.total ?? 0}</span>
                 </button>
                 <button
                     onClick={() => { setTab('paid'); router.get(route('admin.donations'), { ...filters, tab: 'paid' }, { preserveState: true }); }}
-                    className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${tab === 'paid' ? 'bg-white shadow text-green-600' : 'text-gray-500 hover:text-gray-700'}`}
+                    className={`px-4 sm:px-6 py-2.5 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${tab === 'paid' ? 'bg-white shadow text-green-600' : 'text-gray-500 hover:text-gray-700'}`}
                 >
                     Donasi Terbayar <span className="ml-2 px-2 py-0.5 bg-gray-200 text-gray-700 rounded-full text-[10px]">{paidDonations?.total ?? 0}</span>
                 </button>
@@ -247,15 +247,15 @@ export default function Donations({ pendingDonations = {}, paidDonations = {}, f
             {/* Data Table */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm">
+                    <table className="min-w-[860px] w-full text-left text-sm">
                         <thead className="bg-gray-50/50 text-gray-400 font-black uppercase text-[10px] tracking-widest border-b">
                             <tr>
-                                <th className="px-6 py-4">Invoice</th>
-                                <th className="px-6 py-4">Donatur</th>
-                                <th className="px-6 py-4">Program</th>
-                                <th className="px-6 py-4">Nominal</th>
-                                <th className="px-6 py-4">Tanggal</th>
-                                <th className="px-6 py-4 text-center">Aksi</th>
+                                <th className="px-3 py-4 md:px-6">Invoice</th>
+                                <th className="px-3 py-4 md:px-6">Donatur</th>
+                                <th className="px-3 py-4 md:px-6">Program</th>
+                                <th className="px-3 py-4 md:px-6">Nominal</th>
+                                <th className="px-3 py-4 md:px-6">Tanggal</th>
+                                <th className="px-3 py-4 md:px-6 text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">

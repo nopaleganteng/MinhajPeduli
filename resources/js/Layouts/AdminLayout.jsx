@@ -7,8 +7,9 @@ import {
     LogOut,
     Settings,
     Menu,
+    X,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function normalizeStorageImage(path) {
     if (!path) return null;
@@ -20,7 +21,23 @@ export default function AdminLayout({ children }) {
     const { url, props } = usePage();
     const authUser = props?.auth?.user;
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [mobileOpen, setMobileOpen] = useState(false);
     const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+
+    const labelsVisible = sidebarOpen || mobileOpen;
+
+    // Tutup drawer mobile saat route berganti
+    useEffect(() => {
+        setMobileOpen(false);
+    }, [url]);
+
+    const handleToggleSidebar = () => {
+        if (window.innerWidth < 1024) {
+            setMobileOpen((v) => !v);
+        } else {
+            setSidebarOpen((v) => !v);
+        }
+    };
 
     const operationalMenu = [
         {
@@ -82,7 +99,7 @@ export default function AdminLayout({ children }) {
                     ${isActive ? "bg-green-700 text-white shadow-md" : "text-green-100 hover:bg-green-800 hover:text-white"}`}
             >
                 <div>{item.icon}</div>
-                <span className={`${!sidebarOpen && "hidden"} font-medium whitespace-nowrap`}>
+                <span className={`${!labelsVisible && "hidden"} font-medium whitespace-nowrap`}>
                     {item.label}
                 </span>
             </Link>
@@ -91,12 +108,22 @@ export default function AdminLayout({ children }) {
 
     return (
         <div className="min-h-screen bg-gray-50 flex font-sans text-slate-800">
+            {/* Backdrop mobile */}
+            {mobileOpen && (
+                <div
+                    className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+                    onClick={() => setMobileOpen(false)}
+                    aria-hidden="true"
+                />
+            )}
+
             {/* Sidebar */}
             <aside
-                className={`${sidebarOpen ? "w-64" : "w-20"} bg-green-900 text-white transition-all duration-300 fixed h-full z-30 flex flex-col`}
+                className={`${(sidebarOpen || mobileOpen) ? "w-64" : "w-20"} bg-green-900 text-white transition-all duration-300 fixed h-full z-40 flex flex-col
+                    ${mobileOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
             >
                 <div className="h-20 flex items-center justify-center border-b border-green-800 px-3">
-                    {sidebarOpen ? (
+                    {labelsVisible ? (
                         <div className="text-center">
                             <h1 className="text-xl font-bold italic">
                                 Minhaj<span className="text-green-400">Admin</span>
@@ -135,68 +162,69 @@ export default function AdminLayout({ children }) {
 
                 {/* Footer Sidebar (Logout) */}
                 <div
-                    className={`p-4 border-t border-green-800 ${!sidebarOpen && "flex justify-center"}`}
+                    className={`p-4 border-t border-green-800 ${!labelsVisible && "flex justify-center"}`}
                 >
                     <button
                         type="button"
                         onClick={() => setLogoutConfirmOpen(true)}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-lg w-full transition-colors text-red-100 hover:bg-red-800 ${!sidebarOpen && "w-auto"}`}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-lg w-full transition-colors text-red-100 hover:bg-red-800 ${!labelsVisible && "w-auto"}`}
                     >
                         <LogOut size={20} />
                         <span
-                            className={`${!sidebarOpen && "hidden"} font-medium`}
+                            className={`${!labelsVisible && "hidden"} font-medium`}
                         >
                             Logout
                         </span>
                     </button>
                 </div>
+            </aside>
 
-                {/* Logout confirmation modal */}
-                {logoutConfirmOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 border border-gray-200">
-                            <h3 className="text-lg font-bold mb-2 text-black">
-                                Konfirmasi Logout
-                            </h3>
-                            <p className="text-sm text-gray-600 mb-4">
-                                Apakah Anda yakin ingin logout?
-                            </p>
-                            <div className="flex justify-end gap-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setLogoutConfirmOpen(false)}
-                                    className="px-4 py-2 rounded bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
-                                >
-                                    Tidak
-                                </button>
-                                <Link
-                                    href={route("admin.logout")}
-                                    method="post"
-                                    as="button"
-                                    className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
-                                    onClick={() => setLogoutConfirmOpen(false)}
-                                >
-                                    Iya
-                                </Link>
-                            </div>
+            {/* Logout confirmation modal (di luar aside agar fixed tidak tergeser transform) */}
+            {logoutConfirmOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+                    <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 border border-gray-200">
+                        <h3 className="text-lg font-bold mb-2 text-black">
+                            Konfirmasi Logout
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-4">
+                            Apakah Anda yakin ingin logout?
+                        </p>
+                        <div className="flex justify-end gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setLogoutConfirmOpen(false)}
+                                className="px-4 py-2 rounded bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
+                            >
+                                Tidak
+                            </button>
+                            <Link
+                                href={route("admin.logout")}
+                                method="post"
+                                as="button"
+                                className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+                                onClick={() => setLogoutConfirmOpen(false)}
+                            >
+                                Iya
+                            </Link>
                         </div>
                     </div>
-                )}
-            </aside>
+                </div>
+            )}
 
             {/* Main Content Area */}
             <main
-                className={`flex-1 transition-all duration-300 ${sidebarOpen ? "ml-64" : "ml-20"}`}
+                className={`flex-1 transition-all duration-300 ${sidebarOpen ? "lg:ml-64" : "lg:ml-20"}`}
             >
                 {/* Top Header/Navbar */}
-                <header className="h-16 bg-white shadow-sm flex items-center justify-between px-6 sticky top-0 z-20 border-b border-gray-100">
+                <header className="h-16 bg-white shadow-sm flex items-center justify-between px-4 sm:px-6 sticky top-0 z-20 border-b border-gray-100">
                     {/* Tombol Toggle Sidebar */}
                     <button
                         type="button"
-                        onClick={() => setSidebarOpen(!sidebarOpen)}
+                        onClick={handleToggleSidebar}
+                        aria-label="Toggle menu"
                         className="p-2 text-gray-600 hover:bg-gray-100 rounded transition"
                     >
-                        <Menu size={20} />
+                        {mobileOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
 
                     {/* Profil User */}

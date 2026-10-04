@@ -292,7 +292,7 @@ export default function KonfirmasiPembayaran({ auth, id, data, donation_id }) {
                         <button
                             onClick={handleSubmit}
                             disabled={processing}
-                            className={`${processing ? "bg-gray-400" : "bg-green-100 hover:bg-green-200"} text-green-900 font-bold py-3 px-20 rounded-full shadow-md border border-green-300 transition transform active:scale-95`}
+                            className={`${processing ? "bg-gray-400" : "bg-green-100 hover:bg-green-200"} text-green-900 font-bold py-3 px-8 sm:px-20 w-full sm:w-auto rounded-full shadow-md border border-green-300 transition transform active:scale-95`}
                         >
                             {processing ? "Mengirim..." : "Konfirmasi Sekarang"}
                         </button>

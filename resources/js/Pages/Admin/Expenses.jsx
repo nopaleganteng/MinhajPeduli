@@ -186,7 +186,7 @@ export default function Expenses({ expenses = [], filters = {} }) {
                             </button>
 
                             {showFilterMenu && (
-                                <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-xl shadow-xl z-20 p-4">
+                                <div className="absolute right-0 mt-2 w-72 max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-xl shadow-xl z-20 p-4">
                                     <div className="space-y-4">
                                         <div>
                                             <label className="block text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Kategori</label>
@@ -208,7 +208,7 @@ export default function Expenses({ expenses = [], filters = {} }) {
                                             </select>
                                         </div>
 
-                                        <div className="grid grid-cols-2 gap-3">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                             <div>
                                                 <label className="block text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Dari</label>
                                                 <input
@@ -287,7 +287,7 @@ export default function Expenses({ expenses = [], filters = {} }) {
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
                 <div className="overflow-x-auto">
-                    <table className="min-w-full text-left text-sm">
+                    <table className="min-w-[640px] w-full text-left text-sm">
                         <thead className="bg-gray-50 text-gray-500 uppercase text-[10px] tracking-widest">
                             <tr>
                                 <th className="px-5 py-3">Judul</th>

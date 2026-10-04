@@ -13,6 +13,7 @@ import {
     MessageCircle,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import Navbar from "../Components/Navbar";
 
 const formatRupiah = (number) => {
     const num = Number(number);
@@ -75,7 +76,7 @@ export default function DetailDonasi({ auth, program, donation }) {
                 onSuccess: () => {
                     alert(
                         `Berhasil! Status donasi diperbarui menjadi ${newStatus}.`,
-                    );x
+                    );
                 },
             });
         }
@@ -144,14 +145,14 @@ export default function DetailDonasi({ auth, program, donation }) {
                             </button>
                         </div>
 
-                        <div className="grid grid-cols-4 gap-4 mb-8 text-center">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 text-center">
                             <a
                                 href={shareLinks.whatsapp}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="flex flex-col items-center gap-2 group"
                             >
-                                <div className="w-14 h-14 bg-[#25D366] rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#25D366] rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition">
                                     <MessageCircle size={28} fill="white" />
                                 </div>
                                 <span className="text-xs font-medium text-gray-600">
@@ -164,7 +165,7 @@ export default function DetailDonasi({ auth, program, donation }) {
                                 rel="noreferrer"
                                 className="flex flex-col items-center gap-2 group"
                             >
-                                <div className="w-14 h-14 bg-[#1877F2] rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#1877F2] rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition">
                                     <Facebook size={28} fill="white" />
                                 </div>
                                 <span className="text-xs font-medium text-gray-600">
@@ -177,7 +178,7 @@ export default function DetailDonasi({ auth, program, donation }) {
                                 rel="noreferrer"
                                 className="flex flex-col items-center gap-2 group"
                             >
-                                <div className="w-14 h-14 bg-[#06C755] rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#06C755] rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition">
                                     <span className="font-bold text-xl">L</span>
                                 </div>
                                 <span className="text-xs font-medium text-gray-600">
@@ -190,7 +191,7 @@ export default function DetailDonasi({ auth, program, donation }) {
                                 rel="noreferrer"
                                 className="flex flex-col items-center gap-2 group"
                             >
-                                <div className="w-14 h-14 bg-[#1DA1F2] rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#1DA1F2] rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition">
                                     <Twitter size={28} fill="white" />
                                 </div>
                                 <span className="text-xs font-medium text-gray-600">
@@ -222,50 +223,8 @@ export default function DetailDonasi({ auth, program, donation }) {
             )}
 
             <div className="min-h-screen bg-[#dcfce7] text-slate-800 font-sans">
-                {/* --- Navbar --- */}
-                <nav className="flex justify-between items-center px-6 py-4 bg-green-100 shadow-sm sticky top-0 z-50">
-                    <div className="text-2xl font-bold text-green-700 italic">
-                        Minhaj<span className="text-green-900">Peduli</span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-sm font-semibold">
-                        <Link
-                            href="/"
-                            className="text-gray-600 hover:text-green-700 hover:bg-white px-4 py-2 rounded-full transition-all duration-300 hover:shadow-sm"
-                        >
-                            Beranda
-                        </Link>
-
-                        <Link
-                            href={route("about")}
-                            className="text-gray-600 hover:text-green-700 hover:bg-white px-4 py-2 rounded-full transition-all duration-300 hover:shadow-sm"
-                        >
-                            Tentang
-                        </Link>
-
-                        <Link
-                            href={route("laporan")}
-                            className="text-gray-600 hover:text-green-700 hover:bg-white px-4 py-2 rounded-full transition-all duration-300 hover:shadow-sm"
-                        >
-                            Laporan Keuangan
-                        </Link>
-
-                        <Link
-                            href={route("donasi")}
-                            className="bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition shadow-md border border-transparent"
-                        >
-                            Donasi
-                        </Link>
-
-                        {auth?.user && (
-                            <Link
-                                href={route("admin.dashboard")}
-                                className="ml-4 rounded-md border border-green-600 px-3 py-1 text-green-700 hover:bg-green-50"
-                            >
-                                Dashboard
-                            </Link>
-                        )}
-                    </div>
-                </nav>
+                {/* --- Navbar (responsif, punya hamburger mobile) --- */}
+                <Navbar auth={auth} />
 
                 <div className="max-w-6xl mx-auto px-6 py-10">
                     <Link
@@ -292,26 +251,26 @@ export default function DetailDonasi({ auth, program, donation }) {
                                     className="w-full h-full object-cover transform hover:scale-105 transition duration-500"
                                 />
                             </div>
-                            <h1 className="text-3xl md:text-4xl font-bold text-green-900 mb-4 font-serif">
+                            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-900 mb-4 font-serif break-words">
                                 {program.title}
                             </h1>
-                            <p className="text-lg text-gray-700 mb-8 leading-relaxed font-medium">
+                            <p className="text-base sm:text-lg text-gray-700 mb-8 leading-relaxed font-medium break-words">
                                 {program.desc_short}
                             </p>
                             <hr className="border-green-300 mb-8" />
-                            <div className="bg-white/50 p-6 rounded-2xl border border-green-100">
+                            <div className="bg-white/50 p-5 sm:p-6 rounded-2xl border border-green-100">
                                 <h2 className="text-xl font-bold text-green-800 mb-4 border-l-4 border-green-500 pl-3">
                                     Detail Program
                                 </h2>
-                                <div className="text-gray-800 space-y-4 leading-relaxed text-justify whitespace-pre-line">
+                                <div className="text-gray-800 space-y-4 leading-relaxed text-justify whitespace-pre-line break-words">
                                     {program.desc_long}
                                 </div>
                             </div>
                         </div>
 
                         {/* --- Kanan: Card Donasi & Aksi Admin --- */}
-                        <div className="lg:col-span-1 sticky top-24 space-y-6">
-                            <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 text-center relative overflow-hidden">
+                        <div className="lg:col-span-1 lg:sticky lg:top-24 space-y-6">
+                            <div className="bg-white p-5 sm:p-8 rounded-3xl shadow-xl border border-gray-100 text-center relative overflow-hidden">
                                 <div className="absolute top-0 left-0 w-full h-2 bg-green-500"></div>
 
                                 {/* Statistik Progress */}

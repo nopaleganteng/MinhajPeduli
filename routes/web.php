@@ -142,6 +142,10 @@ Route::get('/donasi/form/{id}/{nominal}', function ($id, $nominal) {
 
 Route::post('/donasi/{id}/store', [DonationController::class, 'storeDonation'])->name('donasi.store');
 
+// Halaman pembayaran per donasi (GET, aman di-refresh) — ponytail: tanpa auth, siapa pun
+// yang tahu donation id bisa melihatnya; kunci dengan token/cek email bila perlu privat.
+Route::get('/donasi/bayar/{donation}', [DonationController::class, 'paymentPage'])->name('donasi.bayar');
+
 Route::get('/donasi/{id}/pembayaran', [DonationController::class, 'paymentForm'])->name('donasi.pembayaran');
 
 // Route GET untuk menampilkan halaman form konfirmasi (menggunakan donation ID)

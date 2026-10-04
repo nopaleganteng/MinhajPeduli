@@ -132,12 +132,12 @@ export default function About({ auth }) {
                     <div className="max-w-5xl mx-auto space-y-16">
                         {/* VISI */}
                         <div className="text-center animate-fade-in-up">
-                            <div className="flex items-center justify-center gap-4 mb-6">
-                                <div className="h-px w-20 bg-green-700"></div>
-                                <h2 className="text-2xl font-bold text-green-800 uppercase">
+                            <div className="flex items-center justify-center gap-2 sm:gap-4 mb-6">
+                                <div className="h-px w-8 sm:w-20 bg-green-700"></div>
+                                <h2 className="text-lg sm:text-2xl font-bold text-green-800 uppercase">
                                     VISI
                                 </h2>
-                                <div className="h-px w-20 bg-green-700"></div>
+                                <div className="h-px w-8 sm:w-20 bg-green-700"></div>
                             </div>
                             {/* Card Hover Lift */}
                             <div className="bg-green-600 text-white p-8 rounded-xl shadow-lg italic text-lg leading-relaxed transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-green-700 cursor-default">
@@ -149,12 +149,12 @@ export default function About({ auth }) {
 
                         {/* MISI */}
                         <div>
-                            <div className="flex items-center justify-center gap-4 mb-6">
-                                <div className="h-px w-20 bg-green-700"></div>
-                                <h2 className="text-2xl font-bold text-green-800 uppercase">
+                            <div className="flex items-center justify-center gap-2 sm:gap-4 mb-6">
+                                <div className="h-px w-8 sm:w-20 bg-green-700"></div>
+                                <h2 className="text-lg sm:text-2xl font-bold text-green-800 uppercase">
                                     MISI
                                 </h2>
-                                <div className="h-px w-20 bg-green-700"></div>
+                                <div className="h-px w-8 sm:w-20 bg-green-700"></div>
                             </div>
 
                             <div className="grid md:grid-cols-2 gap-6">
@@ -221,12 +221,12 @@ export default function About({ auth }) {
                 <section className="bg-green-700 py-16 px-6 text-white mt-10">
                     <div className="max-w-5xl mx-auto">
                         <div className="text-center animate-fade-in-up">
-                            <div className="flex items-center justify-center gap-4 mb-4">
-                                <div className="h-px w-20 bg-green-400"></div>
-                                <h2 className="text-2xl font-bold uppercase">
+                            <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4">
+                                <div className="h-px w-8 sm:w-20 bg-green-400"></div>
+                                <h2 className="text-lg sm:text-2xl font-bold uppercase">
                                     Pendiri Yayasan Al Minhaj
                                 </h2>
-                                <div className="h-px w-20 bg-green-400"></div>
+                                <div className="h-px w-8 sm:w-20 bg-green-400"></div>
                             </div>
                             <p className="text-green-200 font-medium mb-10">
                                 Dewan Pendiri Yayasan Minhajul Misbah Al Jadid
@@ -267,12 +267,12 @@ export default function About({ auth }) {
                 <section className="bg-green-100 py-16 px-6">
                     <div className="max-w-5xl mx-auto">
                         <div className="text-center animate-fade-in-up">
-                            <div className="flex items-center justify-center gap-4 mb-6">
-                                <div className="h-px w-20 bg-green-700"></div>
-                                <h2 className="text-2xl font-bold text-green-800 uppercase">
+                            <div className="flex items-center justify-center gap-2 sm:gap-4 mb-6">
+                                <div className="h-px w-8 sm:w-20 bg-green-700"></div>
+                                <h2 className="text-lg sm:text-2xl font-bold text-green-800 uppercase">
                                     Legalitas Yayasan
                                 </h2>
-                                <div className="h-px w-20 bg-green-700"></div>
+                                <div className="h-px w-8 sm:w-20 bg-green-700"></div>
                             </div>
                             <p className="text-green-900 font-medium mb-10">
                                 Yayasan Minhajul Misbah Al Jadid — disahkan
@@ -288,7 +288,7 @@ export default function About({ auth }) {
                                         Pengesahan Kemenkumham
                                     </h3>
                                 </div>
-                                <ul className="text-sm text-green-900 space-y-2">
+                                <ul className="text-sm text-green-900 space-y-2 break-words">
                                     <li>
                                         <span className="font-semibold">Nomor SK:</span>{" "}
                                         AHU-0017870.AH.01.04.Tahun 2023
@@ -319,7 +319,7 @@ export default function About({ auth }) {
                                         Akta Notaris
                                     </h3>
                                 </div>
-                                <ul className="text-sm text-green-900 space-y-2">
+                                <ul className="text-sm text-green-900 space-y-2 break-words">
                                     <li>
                                         <span className="font-semibold">Notaris:</span>{" "}
                                         Bastriandi, S.H., M.Kn. (Kab. Cianjur)

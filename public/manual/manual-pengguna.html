@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Pengguna — MinhajPeduli</title>
+<style>
+  :root{
+    --green-900:#14532d;
+    --green-800:#166534;
+    --green-700:#15803d;
+    --green-600:#16a34a;
+    --green-500:#22c55e;
+    --green-100:#dcfce7;
+    --green-50:#f0fdf4;
+    --ink:#1f2937;
+    --muted:#6b7280;
+    --line:#e5e7eb;
+    --amber-bg:#fffbeb;
+    --amber-line:#f59e0b;
+    --amber-ink:#92400e;
+    --red-bg:#fef2f2;
+    --red-line:#ef4444;
+    --red-ink:#991b1b;
+    --blue-bg:#eff6ff;
+    --blue-line:#3b82f6;
+    --blue-ink:#1e40af;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:15px;
+    line-height:1.65;
+    color:var(--ink);
+    background:#fff;
+  }
+  .page{max-width:920px;margin:0 auto;background:#fff;box-shadow:0 0 24px rgba(0,0,0,.08)}
+
+  /* ---------- COVER ---------- */
+  .cover{
+    min-height:100vh;
+    background:linear-gradient(160deg,var(--green-900) 0%,var(--green-700) 60%,var(--green-600) 100%);
+    color:#fff;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;padding:64px 40px;position:relative;
+  }
+  .cover .logo{font-size:44px;font-weight:800;font-style:italic;letter-spacing:-1px}
+  .cover .logo span{color:#bbf7d0}
+  .cover .badge{
+    display:inline-block;margin-top:14px;padding:6px 18px;border:2px solid rgba(255,255,255,.6);
+    border-radius:999px;font-size:13px;letter-spacing:.28em;text-transform:uppercase;
+  }
+  .cover h1{font-size:52px;line-height:1.15;margin:56px 0 10px;font-weight:800}
+  .cover h2{font-size:22px;font-weight:400;opacity:.92;margin:0 0 40px;color:#fff}
+  .cover .meta{
+    position:absolute;bottom:44px;left:0;right:0;font-size:14px;opacity:.85;
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .cover .rule{width:120px;height:4px;background:rgba(255,255,255,.55);border-radius:2px;margin:0 auto 0}
+
+  /* ---------- KONTEN ---------- */
+  .content{padding:56px 64px 80px}
+  h1.bab{
+    font-size:30px;color:var(--green-900);margin:0 0 6px;
+    padding-bottom:14px;border-bottom:4px solid var(--green-600);
+  }
+  h1.bab .num{display:block;font-size:15px;font-weight:700;color:var(--green-600);
+    letter-spacing:.22em;text-transform:uppercase;margin-bottom:6px}
+  h2{font-size:21px;color:var(--green-800);margin:38px 0 10px}
+  h3{font-size:17px;color:var(--green-700);margin:26px 0 8px}
+  p{margin:10px 0}
+  ul,ol{margin:10px 0;padding-left:26px}
+  li{margin:5px 0}
+  a{color:var(--green-700)}
+  code{
+    background:var(--green-50);border:1px solid var(--green-100);border-radius:5px;
+    padding:1px 6px;font-family:Consolas,"Courier New",monospace;font-size:.92em;
+  }
+  strong{color:var(--green-900)}
+
+  /* ---------- TOC ---------- */
+  .toc{padding:56px 64px}
+  .toc h1{font-size:28px;color:var(--green-900);border-bottom:4px solid var(--green-600);padding-bottom:12px;margin-top:0}
+  .toc ol{list-style:none;padding-left:0;counter-reset:toc}
+  .toc>ol>li{counter-increment:toc;margin:14px 0 0;font-weight:700;font-size:16.5px}
+  .toc>ol>li::before{content:"Bab " counter(toc);display:inline-block;min-width:76px;color:var(--green-600)}
+  .toc>ol>li>a{color:var(--ink);text-decoration:none}
+  .toc>ol>li>a:hover{color:var(--green-700);text-decoration:underline}
+  .toc ol ol{padding-left:100px;font-weight:400;margin:6px 0 0}
+  .toc ol ol li{margin:4px 0;font-size:14.5px}
+  .toc ol ol li a{color:var(--muted);text-decoration:none}
+  .toc ol ol li a:hover{color:var(--green-700);text-decoration:underline}
+  .toc>ol>li.lampiran::before{content:"Lampiran ";margin-right:4px}
+
+  /* ---------- FIGURE ---------- */
+  figure{
+    margin:22px 0;padding:0;text-align:center;
+    page-break-inside:avoid;break-inside:avoid;
+  }
+  figure img{
+    max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;
+    box-shadow:0 4px 14px rgba(0,0,0,.10);display:block;margin:0 auto;
+  }
+  figcaption{
+    margin-top:9px;font-size:13.5px;font-style:italic;color:var(--muted);
+  }
+  figcaption b{color:var(--green-800);font-style:normal}
+
+  /* ---------- TABEL ---------- */
+  table{
+    width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;
+    page-break-inside:auto;
+  }
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+  th{background:var(--green-800);color:#fff;font-weight:600;font-size:13.5px}
+  tbody tr:nth-child(even){background:var(--green-50)}
+  tr{page-break-inside:avoid;break-inside:avoid}
+
+  /* ---------- KOTAK ---------- */
+  .box{border-radius:10px;padding:14px 18px;margin:18px 0;page-break-inside:avoid}
+  .box p:first-child{margin-top:0}
+  .box p:last-child{margin-bottom:0}
+  .box .title{font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .tip{background:var(--blue-bg);border-left:5px solid var(--blue-line)}
+  .tip .title{color:var(--blue-ink)}
+  .warn{background:var(--amber-bg);border-left:5px solid var(--amber-line)}
+  .warn .title{color:var(--amber-ink)}
+  .danger{background:var(--red-bg);border-left:5px solid var(--red-line)}
+  .danger .title{color:var(--red-ink)}
+
+  /* ---------- LANGKAH ---------- */
+  .steps{list-style:none;counter-reset:step;padding-left:0;margin:16px 0}
+  .steps li{
+    counter-increment:step;position:relative;padding:10px 0 10px 52px;
+    border-bottom:1px dashed var(--line);
+  }
+  .steps li:last-child{border-bottom:none}
+  .steps li::before{
+    content:counter(step);position:absolute;left:0;top:8px;
+    width:34px;height:34px;border-radius:50%;background:var(--green-600);color:#fff;
+    font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;
+  }
+
+  .badge-inline{
+    display:inline-block;background:var(--green-100);color:var(--green-800);
+    border:1px solid var(--green-500);border-radius:999px;padding:1px 10px;
+    font-size:12.5px;font-weight:700;
+  }
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+  /* ---------- NAV BANTU ---------- */
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:26px;
+  }
+  .topbar .mini{font-size:13px;color:var(--muted)}
+  .topbar a.back{font-size:13.5px;font-weight:700;text-decoration:none}
+  .back-to-top{
+    display:inline-block;margin-top:34px;font-size:13.5px;font-weight:700;
+    text-decoration:none;color:var(--green-700);
+  }
+
+  .section{page-break-before:always;break-before:page}
+  .section.first{page-break-before:auto;break-before:auto}
+
+  .cover, th, tbody tr:nth-child(even), .steps li::before,
+  .box, .badge-inline, .doc-footer{
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  /* ---------- FOOTER HALAMAN ---------- */
+  .doc-footer{
+    border-top:3px solid var(--green-600);margin-top:48px;padding-top:12px;
+    font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;
+  }
+
+  /* ---------- PRINT ---------- */
+  @page{size:A4;margin:14mm 13mm}
+  @media print{
+    html,body{background:#fff !important}
+    body{font-size:12.5px}
+    .page{box-shadow:none;max-width:none}
+    .cover{min-height:auto;height:245mm;page-break-after:always;break-after:page;margin:0}
+    .content,.toc{padding:0}
+    .no-print{display:none !important}
+    h1.bab{font-size:23px}
+    h2{font-size:17px}
+    h3{font-size:14.5px}
+    figure img{box-shadow:none;max-height:150mm;max-width:100%;width:auto;height:auto}
+    a{color:var(--ink);text-decoration:none}
+    .section{page-break-before:always;break-before:page}
+    .section.first{page-break-before:auto;break-before:auto}
+    table{font-size:11.5px}
+    th,td{padding:6px 8px}
+  }
+  @media (max-width:760px){
+    .content,.toc{padding:32px 22px 60px}
+    .cover h1{font-size:34px}
+    .two-col{grid-template-columns:1fr}
+    .toc ol ol{padding-left:40px}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ COVER ============ -->
+  <header class="cover">
+    <div>
+      <div class="logo">Minhaj<span>Peduli</span></div>
+      <div class="badge">Platform Donasi Online</div>
+      <div class="rule" style="margin-top:44px"></div>
+      <h1>Manual Pengguna</h1>
+      <h2>Panduan Lengkap Donatur &amp; Administrator<br>Pondok Pesantren Al-Minhaj</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="meta">
+      <div><strong>Versi 1.0</strong> &nbsp;·&nbsp; Oktober 2026</div>
+      <div>Yayasan Minhajul Misbah Al Jadid</div>
+      <div>pesantrenalminhaj.com</div>
+    </div>
+  </header>
+
+  <!-- ============ DAFTAR ISI ============ -->
+  <nav class="toc" id="daftar-isi">
+    <h1>Daftar Isi</h1>
+    <ol>
+      <li><a href="#bab1">Pendahuluan</a>
+        <ol>
+          <li><a href="#b1-1">Tentang MinhajPeduli</a></li>
+          <li><a href="#b1-2">Cara Kerja Sistem Donasi</a></li>
+          <li><a href="#b1-3">Istilah Penting</a></li>
+          <li><a href="#b1-4">Perangkat &amp; Peramban yang Didukung</a></li>
+        </ol>
+      </li>
+      <li><a href="#bab2">Panduan Donatur</a>
+        <ol>
+          <li><a href="#b2-1">Menjelajahi Program Donasi</a></li>
+          <li><a href="#b2-2">Memulai Donasi dari Detail Program</a></li>
+          <li><a href="#b2-3">Langkah 1 — Formulir Donatur</a></li>
+          <li><a href="#b2-4">Langkah 2 — Halaman Pembayaran</a></li>
+          <li><a href="#b2-5">Langkah 3 — Konfirmasi Pembayaran</a></li>
+          <li><a href="#b2-6">Setelah Konfirmasi</a></li>
+          <li><a href="#b2-7">Laporan Keuangan Publik</a></li>
+          <li><a href="#b2-8">Membagikan Program</a></li>
+          <li><a href="#b2-9">Tips Keamanan Berdonasi</a></li>
+        </ol>
+      </li>
+      <li><a href="#bab3">Panduan Administrator</a>
+        <ol>
+          <li><a href="#b3-1">Mengajukan Akses Admin</a></li>
+          <li><a href="#b3-2">Masuk (Login) &amp; Lupa Password</a></li>
+          <li><a href="#b3-3">Tur Panel Admin</a></li>
+          <li><a href="#b3-4">Dashboard Ikhtisar</a></li>
+          <li><a href="#b3-5">Verifikasi Donasi Masuk</a></li>
+          <li><a href="#b3-6">Kelola Program Donasi</a></li>
+          <li><a href="#b3-7">Pencatatan Pengeluaran</a></li>
+          <li><a href="#b3-8">Database Donatur</a></li>
+          <li><a href="#b3-9">Kelola Admin (Super Admin)</a></li>
+          <li><a href="#b3-10">Profil &amp; Pengaturan</a></li>
+        </ol>
+      </li>
+      <li><a href="#bab4">Panduan di Perangkat Mobile</a>
+        <ol>
+          <li><a href="#b4-1">Menu Navigasi Pengunjung</a></li>
+          <li><a href="#b4-2">Drawer Menu Admin</a></li>
+        </ol>
+      </li>
+      <li><a href="#bab5">Pemecahan Masalah &amp; Tanya Jawab</a>
+        <ol>
+          <li><a href="#b5-1">Tanya Jawab (FAQ)</a></li>
+          <li><a href="#b5-2">Pesan Error yang Sering Muncul</a></li>
+        </ol>
+      </li>
+      <li class="lampiran"><a href="#lampiran-a">&nbsp;A — Aturan Validasi Lengkap</a></li>
+      <li class="lampiran"><a href="#lampiran-b">&nbsp;B — Ringkasan Rekening Yayasan</a></li>
+    </ol>
+
+    <div class="doc-footer">
+      <span>Manual Pengguna MinhajPeduli v1.0</span>
+      <span>© 2026 Yayasan Minhajul Misbah Al Jadid</span>
+    </div>
+  </nav>
+
+  <!-- ============ BAB 1 ============ -->
+  <section class="content section" id="bab1">
+    <div class="topbar no-print">
+      <span class="mini">Manual Pengguna MinhajPeduli</span>
+      <a class="back" href="#daftar-isi">↑ Daftar Isi</a>
+    </div>
+
+    <h1 class="bab"><span class="num">Bab 1</span>Pendahuluan</h1>
+
+    <h2 id="b1-1">1.1 Tentang MinhajPeduli</h2>
+    <p><strong>MinhajPeduli</strong> adalah platform donasi daring (crowdfunding) milik <strong>Yayasan Minhajul Misbah Al Jadid</strong> — Pondok Pesantren Al-Minhaj. Website ini memungkinkan siapa pun menyalurkan donasi untuk program-program pembangunan pesantren secara transparan, mulai dari memilih program, mengirim dana, mengunggah bukti transfer, hingga memantau laporan keuangan yang terbuka untuk umum.</p>
+    <figure>
+      <img src="screenshots/08-tentang.png" alt="Halaman Tentang Kami">
+      <figcaption><b>Gambar 1.1</b> — Halaman "Tentang Kami" yang memuat visi, misi, pendiri, dan legalitas yayasan.</figcaption>
+    </figure>
+    <p>Setiap donasi melalui sistem ini diverifikasi secara manual oleh tim pengelola sebelum masuk ke dalam laporan keuangan publik. Sistem ini bersifat terbuka: setiap orang dapat melihat program, berdonasi, dan membaca laporan keuangan tanpa harus memiliki akun.</p>
+
+    <h2 id="b1-2">1.2 Cara Kerja Sistem Donasi</h2>
+    <p>Alur donasi terdiri dari lima tahap utama:</p>
+    <ol class="steps">
+      <li><strong>Pilih Program</strong> — Pengunjung memilih program donasi dari daftar program, lalu memasukkan nominal donasi (minimal Rp 10.000).</li>
+      <li><strong>Isi Formulir Donatur</strong> — Nama, email, nomor telepon, dan doa/harapan. Donatur dapat memilih menampilkan nama sebagai "Hamba Allah".</li>
+      <li><strong>Transfer Bank</strong> — Sistem menampilkan nomor rekening yayasan, nomor invoice, dan kode unik. Donatur mentransfer dana lewat m-banking/ATM sesuai nominal yang tertera.</li>
+      <li><strong>Konfirmasi Pembayaran</strong> — Donatur mengunggah bukti transfer beserta informasi bank pengirim dan tanggal pembayaran.</li>
+      <li><strong>Verifikasi Pengelola</strong> — Admin memeriksa bukti, lalu menyetujui (<em>paid</em>) atau menolak (<em>failed</em>) donasi. Donasi yang disetujui otomatis tercatat di dashboard, statistik, dan laporan publik.</li>
+    </ol>
+
+    <div class="box tip">
+      <div class="title">ℹ️ Catatan</div>
+      <p>Sistem menggunakan <strong>verifikasi manual</strong> — tidak ada pembayaran otomatis/gerbang pembayaran (payment gateway). Dana masuk langsung ke rekening yayasan, dan pengelola yang memverifikasi bukti transfer.</p>
+    </div>
+
+    <h2 id="b1-3">1.3 Istilah Penting</h2>
+    <table>
+      <thead>
+        <tr><th style="width:26%">Istilah</th><th>Penjelasan</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Invoice</strong></td>
+          <td>Nomor transaksi unik berformat <code>MM</code> + tanggal (6 digit) + 5 karakter acak, misalnya <code>MM20261003QcXtx</code>. Digunakan untuk mengidentifikasi donasi Anda.</td>
+        </tr>
+        <tr>
+          <td><strong>Kode Unik</strong></td>
+          <td>Tiga angka acak (1–999) yang diberikan sistem pada tiap donasi, misalnya <code>875</code>. <strong>Tidak perlu ditransfer</strong> — total transfer tetap sama dengan nominal donasi. Kode ini hanya penanda transaksi.</td>
+        </tr>
+        <tr>
+          <td><strong>Kode Kata</strong></td>
+          <td>Dua huruf pertama dari judul program (inisial), ditampilkan pada halaman pembayaran sebagai penanda program.</td>
+        </tr>
+        <tr>
+          <td><strong>Hamba Allah</strong></td>
+          <td>Opsi anonimitas pada formulir donasi. Jika dicentang, nama Anda ditampilkan sebagai "Hamba Allah" di laporan keuangan publik.</td>
+        </tr>
+        <tr>
+          <td><strong>Status Donasi</strong></td>
+          <td><span class="badge-inline">pending</span> menunggu verifikasi &nbsp;·&nbsp; <span class="badge-inline">paid</span> disetujui &nbsp;·&nbsp; <span class="badge-inline">failed</span> ditolak/gagal.</td>
+        </tr>
+        <tr>
+          <td><strong>Verifikasi Manual</strong></td>
+          <td>Proses pemeriksaan bukti transfer oleh admin sebelum donasi tercatat resmi.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="b1-4">1.4 Perangkat &amp; Peramban yang Didukung</h2>
+    <ul>
+      <li><strong>Peramban (browser):</strong> Google Chrome, Microsoft Edge, Mozilla Firefox, atau Safari versi terbaru.</li>
+      <li><strong>Perangkat:</strong> komputer desktop, laptop, tablet, maupun ponsel pintar (website responsif).</li>
+      <li><strong>Koneksi:</strong> disarankan internet stabil saat mengunggah bukti pembayaran.</li>
+    </ul>
+
+    <a class="back-to-top" href="#daftar-isi">↑ Kembali ke Daftar Isi</a>
+    <div class="doc-footer"><span>Bab 1 — Pendahuluan</span><span>MinhajPeduli v1.0</span></div>
+  </section>
+
+  <!-- ============ BAB 2 ============ -->
+  <section class="content section" id="bab2">
+    <div class="topbar no-print">
+      <span class="mini">Manual Pengguna MinhajPeduli</span>
+      <a class="back" href="#daftar-isi">↑ Daftar Isi</a>
+    </div>
+
+    <h1 class="bab"><span class="num">Bab 2</span>Panduan Donatur</h1>
+    <p>Bab ini menjelaskan langkah berdonasi dari awal hingga selesai — ditujukan untuk pengunjung dan donatur.</p>
+
+    <h2 id="b2-1">2.1 Menjelajahi Program Donasi</h2>
+    <p>Buka halaman utama website. Beranda memuat slider foto pesantren, ringkasan statistik (jumlah program, total dana terkumpul, jumlah donatur), serta daftar program donasi.</p>
+    <figure>
+      <img src="screenshots/01-beranda.png" alt="Halaman beranda MinhajPeduli">
+      <figcaption><b>Gambar 2.1</b> — Halaman beranda: judul pesantren, slider, dan ringkasan statistik.</figcaption>
+    </figure>
+    <p>Untuk melihat seluruh program, klik menu <strong>Donasi</strong> pada navigasi atas. Di halaman ini Anda dapat:</p>
+    <ul>
+      <li><strong>Mencari program</strong> dengan mengetik kata kunci pada kolom pencarian.</li>
+      <li>Melihat <strong>progress bar</strong> dana terkumpul dibanding target tiap program.</li>
+      <li>Klik <strong>"Lihat Semua Program"</strong> bila program yang ditampilkan dibatasi.</li>
+    </ul>
+    <figure>
+      <img src="screenshots/02-daftar-program.png" alt="Daftar program donasi">
+      <figcaption><b>Gambar 2.2</b> — Halaman daftar program dengan pencarian dan progress dana.</figcaption>
+    </figure>
+
+    <h2 id="b2-2">2.2 Memulai Donasi dari Detail Program</h2>
+    <p>Klik tombol <strong>"Donasi Sekarang"</strong> pada kartu program, atau klik gambar/judul program untuk membuka halaman detail.</p>
+    <figure>
+      <img src="screenshots/03-detail-program.png" alt="Halaman detail program">
+      <figcaption><b>Gambar 2.3</b> — Halaman detail program: deskripsi, progress lingkaran persentase, dan kartu donasi.</figcaption>
+    </figure>
+    <p>Pada kartu donasi di sebelah kanan, isi <strong>Nominal Donasi</strong> lalu klik <strong>"Donasi Sekarang"</strong>.</p>
+    <figure>
+      <img src="screenshots/03b-card-donasi.png" alt="Kartu donasi dengan input nominal">
+      <figcaption><b>Gambar 2.4</b> — Kartu donasi: persentase progress, kolom nominal, dan tombol aksi.</figcaption>
+    </figure>
+    <div class="box warn">
+      <div class="title">⚠️ Aturan Nominal</div>
+      <p>Nominal donasi minimal <strong>Rp 10.000</strong>. Jika kurang dari Rp 10.000 atau kolom dikosongkan, akan muncul peringatan: <em>"Mohon masukkan nominal donasi minimal Rp 10.000 untuk melanjutkan."</em></p>
+    </div>
+
+    <h2 id="b2-3">2.3 Langkah 1 — Formulir Donatur</h2>
+    <p>Anda akan masuk ke halaman <strong>Formulir Donasi</strong> (tahap 1 dari 3 pada indikator di atas).</p>
+    <figure>
+      <img src="screenshots/04-formulir-donasi.png" alt="Formulir donasi langkah 1">
+      <figcaption><b>Gambar 2.5</b> — Formulir donatur: data diri di kiri, ringkasan transaksi &amp; metode pembayaran di kanan.</figcaption>
+    </figure>
+    <h3>Isian yang harus diisi</h3>
+    <table>
+      <thead><tr><th style="width:24%">Kolom</th><th>Keterangan</th></tr></thead>
+      <tbody>
+        <tr><td>Sapaan <span class="badge-inline">wajib</span></td><td>Pilih Bapak / Ibu / Saudara / Saudari.</td></tr>
+        <tr><td>Nama Lengkap <span class="badge-inline">wajib</span></td><td>Nama Anda sesuai identitas.</td></tr>
+        <tr><td>E-mail <span class="badge-inline">wajib</span></td><td>Alamat email aktif (mis. <code>example@gmail.com</code>).</td></tr>
+        <tr><td>Nomor Telepon <span class="badge-inline">wajib</span></td><td>Nomor HP yang dapat dihubungi.</td></tr>
+        <tr><td>Do'a &amp; Harapan</td><td>Opsional — ditulis pada kolom teks panjang.</td></tr>
+        <tr><td>Sembunyikan nama saya</td><td>Centang bila ingin nama tampil sebagai <strong>"Hamba Allah"</strong> pada laporan publik.</td></tr>
+      </tbody>
+    </table>
+    <h3>Metode pembayaran</h3>
+    <p>Pada panel kanan, pastikan metode <strong>"Transfer Bank (Verifikasi Manual)"</strong> terpilih (satu-satunya pilihan, sudah tercentang otomatis). Perhatikan ringkasan transaksi: judul program dan <strong>Total Donasi</strong> sesuai nominal yang Anda masukkan.</p>
+    <p>Setelah semua data benar, klik tombol <strong>"Lanjut Pembayaran"</strong>.</p>
+    <div class="box tip">
+      <div class="title">ℹ️ Segera selesaikan langkah ini</div>
+      <p>Setelah tombol diklik, sistem membuat nomor invoice dan memandu Anda ke halaman pembayaran. Jangan refresh berulang saat mengisi formulir.</p>
+    </div>
+
+    <h2 id="b2-4">2.4 Langkah 2 — Halaman Pembayaran</h2>
+    <p>Halaman ini menampilkan seluruh rincian yang Anda butuhkan untuk mentransfer dana.</p>
+    <figure>
+      <img src="screenshots/05-pembayaran-rekening.png" alt="Halaman pembayaran dengan rekening tujuan">
+      <figcaption><b>Gambar 2.6</b> — Rincian pembayaran: data donatur, bank tujuan, nominal, kode unik, dan total transfer.</figcaption>
+    </figure>
+    <h3>Yang perlu Anda lakukan</h3>
+    <ol class="steps">
+      <li><strong>Salin nomor rekening tujuan</strong> — Klik tombol <strong>"Salin Nomor Rekening"</strong> (BTN Syariah <code>20022284222</code> a.n. Yayasan Minhajul Misbah Al Jadid).</li>
+      <li><strong>Catat nomor invoice</strong> — Klik tombol salin di baris <em>No. Invoice</em> dan simpan sebagai bukti pendaftaran donasi.</li>
+      <li><strong>Mentrasfer dana</strong> — Buka m-banking/ATM/transfer bank Anda, kirim sesuai <strong>Nominal Donasi</strong>.</li>
+      <li><strong>Perhatikan Kode Unik</strong> — angka merah di bawah nominal. <strong>Jangan ditransfer</strong> — hanya penanda transaksi.</li>
+      <li><strong>Periksa TOTAL TRANSFER</strong> — sama persis dengan nominal donasi Anda.</li>
+      <li>Klik tombol <strong>"Konfirmasi manual"</strong> atau <strong>"Sudah sesuai nominal"</strong> untuk melanjutkan.</li>
+    </ol>
+    <div class="box danger">
+      <div class="title">🚫 Kode Unik TIDAK Ditransfer</div>
+      <p>Jika nominal Anda Rp 10.000 dan kode unik <code>875</code>, maka yang ditransfer tetap <strong>Rp 10.000</strong> — bukan Rp 10.875. Kode unik hanya identifikasi sistem.</p>
+    </div>
+    <div class="box tip">
+      <div class="title">ℹ️ QRIS</div>
+      <p>Blok QRIS ditampilkan hanya jika sudah dikonfigurasi pengelola. Saat ini fitur QRIS nonaktif — gunakan transfer bank seperti langkah di atas.</p>
+    </div>
+
+    <h2 id="b2-5">2.5 Langkah 3 — Konfirmasi Pembayaran</h2>
+    <p>Halaman terakhir: lengkapi data pengiriman bukti transfer Anda.</p>
+    <figure>
+      <img src="screenshots/06-konfirmasi-pembayaran.png" alt="Formulir konfirmasi pembayaran">
+      <figcaption><b>Gambar 2.7</b> — Formulir konfirmasi: data invoice, bank pengirim, tanggal, dan unggah bukti.</figcaption>
+    </figure>
+    <table>
+      <thead><tr><th style="width:24%">Kolom</th><th>Keterangan</th></tr></thead>
+      <tbody>
+        <tr><td>No. Invoice</td><td>Tampil otomatis (read-only) — terisi sesuai langkah sebelumnya.</td></tr>
+        <tr><td>Bank Anda <span class="badge-inline">wajib</span></td><td>Nama pemilik rekening asal transfer, lalu pilih <strong>BCA / BRI / MANDIRI / BNI</strong> pada dropdown bank pengirim.</td></tr>
+        <tr><td>Jumlah Donasi</td><td>Tampil otomatis (read-only).</td></tr>
+        <tr><td>Kode Unik</td><td>Tampil otomatis dalam format 3 digit, misalnya <code>875</code>.</td></tr>
+        <tr><td>Tanggal Bayar <span class="badge-inline">wajib</span></td><td>Tanggal Anda mentransfer (default: hari ini).</td></tr>
+        <tr><td>Bukti Pembayaran <span class="badge-inline">wajib</span></td><td>Klik <strong>"Pilih File"</strong>, pilih foto bukti transfer. Format: <strong>.jpg / .jpeg / .png</strong>, ukuran maksimal <strong>2 MB</strong>. Pratinjau tampil setelah dipilih.</td></tr>
+        <tr><td>Catatan</td><td>Opsional — keterangan tambahan untuk pengelola.</td></tr>
+      </tbody>
+    </table>
+    <p>Terakhir, klik tombol <strong>"Konfirmasi Sekarang"</strong>. Tunggu hingga muncul pesan sukses.</p>
+
+    <h2 id="b2-6">2.6 Setelah Konfirmasi</h2>
+    <ol>
+      <li>Muncul jendela <strong>"Terima Kasih! Konfirmasi pembayaran Anda telah kami terima dan akan segera diverifikasi."</strong> — klik <strong>Oke</strong>.</li>
+      <li>Status donasi Anda menjadi <span class="badge-inline">pending</span> (menunggu verifikasi pengelola).</li>
+      <li>Pengelola memeriksa bukti transfer Anda. Jika sesuai, status menjadi <span class="badge-inline">paid</span> dan donasi tercatat pada laporan keuangan publik.</li>
+    </ol>
+    <div class="box warn">
+      <div class="title">⚠️ Simpan Nomor Invoice Anda</div>
+      <p>Saat ini donatur belum memiliki halaman khusus untuk melacak status donasi. <strong>Simpan nomor invoice</strong> Anda sebagai bukti, dan pantau perkembangannya melalui halaman Laporan Keuangan atau hubungi pengelola pesantren bila perlu konfirmasi.</p>
+    </div>
+
+    <h2 id="b2-7">2.7 Laporan Keuangan Publik</h2>
+    <p>Menu <strong>Laporan Keuangan</strong> terbuka untuk siapa saja. Halaman ini menampilkan:</p>
+    <ul>
+      <li>Total Pemasukan, Total Pengeluaran, dan Saldo Saat Ini.</li>
+      <li>Tabel <strong>Mutasi Terakhir</strong> — lima transaksi masuk dan keluar terbaru.</li>
+    </ul>
+    <figure>
+      <img src="screenshots/07-laporan-keuangan.png" alt="Halaman laporan keuangan">
+      <figcaption><b>Gambar 2.8</b> — Laporan keuangan publik: kartu ringkasan dan tabel mutasi terakhir.</figcaption>
+    </figure>
+    <div class="box tip">
+      <div class="title">ℹ️ Privasi Nama</div>
+      <p>Donasi yang dicentang "Sembunyikan nama saya" tampil sebagai <strong>"Hamba Allah"</strong> pada laporan. Nama asli tidak pernah ditampilkan.</p>
+    </div>
+
+    <h2 id="b2-8">2.8 Membagikan Program</h2>
+    <p>Pada halaman detail program, klik tombol <strong>"Bagikan"</strong> untuk membagikan program ke:</p>
+    <ul>
+      <li>WhatsApp, Facebook, Twitter, atau LINE — langsung membuka aplikasi/platform masing-masing.</li>
+      <li><strong>"Salin"</strong> — menyalin tautan program ke papan klip untuk dibagikan lewat kanal lain.</li>
+    </ul>
+
+    <h2 id="b2-9">2.9 Tips Keamanan Berdonasi</h2>
+    <ul>
+      <li>Pastikan nomor rekening tujuan selalu <strong>BTN Syariah 20022284222 a.n. Yayasan Minhajul Misbah Al Jadid</strong> — periksa kembali setiap kali berdonasi.</li>
+      <li>Transfer sesuai <strong>nominal persis</strong> yang tertera pada halaman pembayaran.</li>
+      <li>Simpan struk/screenshot transfer dan nomor invoice hingga donasi terkonfirmasi.</li>
+      <li>Waspadai pihak yang mengatasnamakan pengelola dan meminta transfer ke rekening lain.</li>
+    </ul>
+
+    <a class="back-to-top" href="#daftar-isi">↑ Kembali ke Daftar Isi</a>
+    <div class="doc-footer"><span>Bab 2 — Panduan Donatur</span><span>MinhajPeduli v1.0</span></div>
+  </section>
+
+  <!-- ============ BAB 3 ============ -->
+  <section class="content section" id="bab3">
+    <div class="topbar no-print">
+      <span class="mini">Manual Pengguna MinhajPeduli</span>
+      <a class="back" href="#daftar-isi">↑ Daftar Isi</a>
+    </div>
+
+    <h1 class="bab"><span class="num">Bab 3</span>Panduan Administrator</h1>
+    <p>Bab ini ditujukan untuk pengelola yayasan yang mengoperasikan panel admin: memverifikasi donasi, mengelola program, mencatat pengeluaran, dan mengatur akun admin.</p>
+
+    <div class="box warn">
+      <div class="title">⚠️ Dua Jenis Peran</div>
+      <p><strong>Super Admin</strong> — seluruh akses, termasuk menambah/menghapus/menyetujui akun admin lain.<br>
+      <strong>Administrator</strong> — akses operasional (dashboard, donasi, program, pengeluaran, donatur, pengaturan), <em>tanpa</em> menu Kelola Admin.</p>
+    </div>
+
+    <h2 id="b3-1">3.1 Mengajukan Akses Admin</h2>
+    <p>Akun admin tidak dibuat sendiri oleh pengguna umum. Calon admin mengajukan diri:</p>
+    <ol class="steps">
+      <li>Buka halaman login admin, lalu klik link <strong>"Ajukan akses admin"</strong>.</li>
+      <li>Isi formulir: Nama Lengkap, E-mail, No. Telepon, Password (min. 8 karakter), dan Konfirmasi Password.</li>
+      <li>Klik <strong>"Ajukan Akses Admin"</strong>. Akun dibuat dengan status <span class="badge-inline">pending</span>.</li>
+      <li>Masuk status <strong>pending</strong> hingga disetujui Super Admin (lihat bagian 3.9). Selama itu, login akan ditolak dengan pesan bahwa akun masih menunggu persetujuan.</li>
+    </ol>
+    <figure>
+      <img src="screenshots/20-ajukan-akses.png" alt="Formulir ajukan akses admin">
+      <figcaption><b>Gambar 3.1</b> — Formulir pengajuan akses admin.</figcaption>
+    </figure>
+
+    <h2 id="b3-2">3.2 Masuk (Login) &amp; Lupa Password</h2>
+    <p>Akses panel di <strong>/admin/login</strong>. Masukkan email dan password, centang <em>"Ingat saya"</em> bila ingin sesi tetap aktif di perangkat tersebut, lalu klik <strong>"Masuk Dashboard"</strong>.</p>
+    <figure>
+      <img src="screenshots/19-admin-login.png" alt="Halaman login admin">
+      <figcaption><b>Gambar 3.2</b> — Halaman login panel admin.</figcaption>
+    </figure>
+    <h3>Lupa password</h3>
+    <ol>
+      <li>Klik <strong>"Lupa password?"</strong> pada halaman login.</li>
+      <li>Masukkan email admin Anda, klik <strong>"Kirim Link Reset Password"</strong>.</li>
+      <li>Buka tautan dari email (periksa folder <em>Spam</em> bila tidak masuk kotak masuk), lalu masukkan password baru (min. 8 karakter) dua kali.</li>
+      <li>Setelah berhasil, login dengan password baru.</li>
+    </ol>
+    <div class="box danger">
+      <div class="title">🚫 Pengaman Login</div>
+      <p>Login dibatasi <strong>5 kali percobaan</strong> per email. Setelah lima kali gagal, akun dikunci sementara oleh sistem. Jika lupa password, gunakan <em>Lupa Password</em> — jangan menebak berulang kali.</p>
+    </div>
+
+    <h2 id="b3-3">3.3 Tur Panel Admin</h2>
+    <p>Setelah masuk, Anda akan melihat panel dengan sidebar navigasi di kiri dan header profil di kanan atas.</p>
+    <figure>
+      <img src="screenshots/10-admin-dashboard.png" alt="Dashboard admin">
+      <figcaption><b>Gambar 3.3</b> — Tampilan utama panel admin dengan sidebar menu dan dashboard ikhtisar.</figcaption>
+    </figure>
+    <table>
+      <thead><tr><th style="width:30%">Menu</th><th>Fungsi</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Dashboard</strong></td><td>Ikhtisar keuangan dan donasi terbaru.</td></tr>
+        <tr><td><strong>Donasi Masuk</strong></td><td>Verifikasi dan kelola seluruh donasi.</td></tr>
+        <tr><td><strong>Kelola Program</strong></td><td>Tambah, ubah, dan hapus program donasi.</td></tr>
+        <tr><td><strong>Pengeluaran</strong></td><td>Pencatatan pengeluaran yayasan.</td></tr>
+        <tr><td><strong>Data Donatur</strong></td><td>Daftar donatur teragregasi.</td></tr>
+        <tr><td><strong>Kelola Admin</strong></td><td>Khusus <em>Super Admin</em> — akun &amp; persetujuan admin.</td></tr>
+        <tr><td><strong>Profil &amp; Pengaturan</strong></td><td>Data diri, ganti password, info website.</td></tr>
+        <tr><td><strong>Logout</strong></td><td>Keluar dari panel (ada konfirmasi).</td></tr>
+      </tbody>
+    </table>
+    <p>Lencana peran (<em>Super Admin</em> / <em>Administrator</em>) tampil di bawah logo sidebar dan pada header profil.</p>
+
+    <h2 id="b3-4">3.4 Dashboard Ikhtisar</h2>
+    <p>Dashboard menampilkan lima kartu statistik:</p>
+    <ul>
+      <li><strong>Total Donasi Masuk</strong> — akumulasi donasi berstatus <em>paid</em>.</li>
+      <li><strong>Total Pengeluaran</strong> — akumulasi seluruh catatan pengeluaran.</li>
+      <li><strong>Saldo Akhir</strong> — total donasi masuk dikurangi pengeluaran.</li>
+      <li><strong>Perlu Verifikasi</strong> — jumlah donasi berstatus <em>pending</em>.</li>
+      <li><strong>Program Aktif</strong> — jumlah program donasi yang berjalan.</li>
+    </ul>
+    <p>Di bawahnya ada tabel <strong>Donasi Terbaru</strong> (5 transaksi terakhir) dengan tombol <strong>"Detail"</strong> untuk menuju halaman verifikasi. Klik <strong>"Lihat Semua"</strong> untuk membuka daftar lengkap.</p>
+
+    <h2 id="b3-5">3.5 Verifikasi Donasi Masuk</h2>
+    <p>Menu <strong>Donasi Masuk</strong> adalah pusat kerja verifikasi.</p>
+    <figure>
+      <img src="screenshots/11-admin-donasi-masuk.png" alt="Halaman donasi masuk">
+      <figcaption><b>Gambar 3.4</b> — Halaman Donasi Masuk: tab, filter, dan aksi cepat per baris.</figcaption>
+    </figure>
+    <h3>Fitur halaman</h3>
+    <ul>
+      <li><strong>Tab</strong> — "Donasi Masuk" (<em>pending</em>) dan "Donasi Terbayar" (<em>paid</em>), masing-masing berpaginasi 10 baris.</li>
+      <li><strong>Aksi cepat per baris</strong> — ✓ menerima donasi, ✗ menolak, 👁 membuka detail, serta ikon pensil untuk <strong>mengoreksi nominal</strong> (minimal Rp 1.000).</li>
+      <li><strong>Filter &amp; Urutkan</strong> — urutkan nominal (besar–kecil / kecil–besar), rentang tanggal (dari–sampai), dan tombol <em>Reset Semua Filter</em>.</li>
+      <li><strong>Export CSV</strong> — mengunduh daftar donasi ke berkas Excel/CSV.</li>
+    </ul>
+    <h3>Verifikasi langkah demi langkah</h3>
+    <ol class="steps">
+      <li>Buka tab <strong>"Donasi Masuk"</strong>, lalu klik 👁 <strong>Detail</strong> pada donasi yang akan diperiksa.</li>
+      <li>Periksa rincian: data donatur, program, nominal, pesan/doa, dan <strong>foto bukti transfer</strong> (klik gambar untuk memperbesar).</li>
+      <li><strong>Cocokkan</strong> nominal di bukti dengan nominal donasi, serta tanggal dan rekening pengirim.</li>
+      <li>Jika <strong>Sesuai</strong> → klik <strong>"Terima Donasi"</strong> (status menjadi <em>paid</em>).<br>Jika <strong>Tidak sesuai</strong> → klik <strong>"Tolak / Gagal"</strong> (status menjadi <em>failed</em>).</li>
+      <li>Bukti dapat diganti bila donatur mengunggah ulang: gunakan opsi unggah bukti pada halaman detail.</li>
+    </ol>
+    <figure>
+      <img src="screenshots/12-admin-detail-donasi.png" alt="Detail donasi admin">
+      <figcaption><b>Gambar 3.5</b> — Halaman detail donasi: informasi donatur, bukti pembayaran, dan panel aksi Terima/Tolak.</figcaption>
+    </figure>
+    <div class="box tip">
+      <div class="title">ℹ️ Catatan</div>
+      <p>Donasi berstatus <em>failed</em> tidak tampil pada tab mana pun — periksa melalui riwayat bila diperlukan. Data statistik dan laporan hanya menghitung donasi berstatus <em>paid</em>.</p>
+    </div>
+
+    <h2 id="b3-6">3.6 Kelola Program Donasi</h2>
+    <figure>
+      <img src="screenshots/13-admin-program.png" alt="Halaman kelola program">
+      <figcaption><b>Gambar 3.6</b> — Halaman Kelola Program: daftar kartu program dengan progress dan tombol aksi.</figcaption>
+    </figure>
+    <h3>Menambah program</h3>
+    <ol class="steps">
+      <li>Klik tombol <strong>"Tambah Program"</strong>.</li>
+      <li>Isi <strong>Nama Program</strong>, <strong>Target Dana</strong> (Rp), unggah <strong>Gambar</strong> (.jpg/.jpeg/.png, maks. 2 MB), dan <strong>Deskripsi</strong> (singkat — otomatis menjadi deskripsi pendek &amp; panjang pada halaman publik).</li>
+      <li>Simpan. Program langsung tampil di website donasi publik.</li>
+    </ol>
+    <h3>Mengubah &amp; menghapus</h3>
+    <ul>
+      <li><strong>Edit</strong> — ubah nama, target, gambar, atau deskripsi lewat tombol Edit pada kartu.</li>
+      <li><strong>Hapus</strong> — klik Hapus dan konfirmasi peringatan.</li>
+    </ul>
+    <div class="box danger">
+      <div class="title">🚫 Hapus Program = Hapus Semua Donasinya</div>
+      <p>Menghapus satu program akan menghapus <strong>seluruh donasi yang terkait program tersebut</strong> beserta berkas bukti pembayarannya, dalam satu transaksi. Total donasi pada dashboard dan laporan akan berkurang otomatis. <strong>Yakin dulu sebelum menghapus.</strong></p>
+    </div>
+    <p>Gunakan <strong>filter status</strong> (Semua / Aktif) dan kolom pencarian untuk menemukan program dengan cepat.</p>
+
+    <h2 id="b3-7">3.7 Pencatatan Pengeluaran</h2>
+    <figure>
+      <img src="screenshots/14-admin-pengeluaran.png" alt="Halaman pengeluaran">
+      <figcaption><b>Gambar 3.7</b> — Halaman Pengeluaran Keuangan dengan kartu total dan tabel catatan.</figcaption>
+    </figure>
+    <ol class="steps">
+      <li>Klik tombol tambah (formulir modal) lalu isi <strong>Judul</strong>, <strong>Kategori</strong>, <strong>Nominal</strong>, <strong>Tanggal</strong>, dan deskripsi (opsional).</li>
+      <li>Kategori tersedia: <strong>Operasional, Konsumsi, Pendidikan, Program, Lainnya</strong>.</li>
+      <li>Simpan — kartu <em>Total Pengeluaran</em> dan saldo otomatis menyesuaikan.</li>
+    </ol>
+    <p>Data dapat dicari, difilter per kategori dan rentang tanggal, serta diurutkan berdasarkan tanggal atau nominal. Edit dan hapus tersedia pada tiap baris.</p>
+
+    <h2 id="b3-8">3.8 Database Donatur</h2>
+    <figure>
+      <img src="screenshots/15-admin-donatur.png" alt="Database donatur">
+      <figcaption><b>Gambar 3.8</b> — Database Donatur: ringkasan per donatur dan pencarian.</figcaption>
+    </figure>
+    <p>Halaman ini merangkum seluruh donasi berstatus <em>paid</em> menjadi satu baris per donatur: nama, kontak, <strong>total donasi</strong>, dan <strong>donasi terakhir</strong>.</p>
+    <ul>
+      <li><strong>Pencarian</strong> — berdasarkan nama, email, atau nomor telepon.</li>
+      <li><strong>Ekspor CSV</strong> — unduh data donatur untuk keperluan arsip/donatur.</li>
+    </ul>
+
+    <h2 id="b3-9">3.9 Kelola Admin (Khusus Super Admin)</h2>
+    <figure>
+      <img src="screenshots/16-admin-kelola-admin.png" alt="Kelola admin">
+      <figcaption><b>Gambar 3.9</b> — Halaman Kelola Admin: daftar akun, status, dan aksi persetujuan.</figcaption>
+    </figure>
+    <table>
+      <thead><tr><th style="width:34%">Aksi</th><th>Keterangan</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Tambah Admin</strong></td><td>Buat akun baru langsung berstatus <em>approved</em>, dengan peran Admin atau Super Admin.</td></tr>
+        <tr><td><strong>Setujui</strong></td><td>Menerima pengajuan akun berstatus <em>pending</em> agar bisa login.</td></tr>
+        <tr><td><strong>Tolak</strong></td><td>Menolak pengajuan akun.</td></tr>
+        <tr><td><strong>Edit</strong></td><td>Ubah nama, email, telepon, password, atau peran.</td></tr>
+        <tr><td><strong>Hapus</strong></td><td>Menghapus akun admin. Anda <em>tidak dapat</em> menghapus akun Anda sendiri.</td></tr>
+      </tbody>
+    </table>
+    <div class="box tip">
+      <div class="title">ℹ️ Peran</div>
+      <p>Hanya <strong>Super Admin</strong> yang melihat menu ini. Bila ada calon admin yang mengajukan diri lewat halaman 3.1, setujui dari tabel ini sebelum ia bisa login.</p>
+    </div>
+
+    <h2 id="b3-10">3.10 Profil &amp; Pengaturan</h2>
+    <figure>
+      <img src="screenshots/17-admin-pengaturan.png" alt="Halaman pengaturan admin">
+      <figcaption><b>Gambar 3.10</b> — Pengaturan: Profil Admin dan Ganti Password.</figcaption>
+    </figure>
+    <h3>Profil Admin</h3>
+    <ul>
+      <li>Perbarui nama, email, nomor telepon, dan foto profil.</li>
+      <li>Foto: format .jpg/.jpeg/.png, ukuran maksimal <strong>1 MB</strong>.</li>
+    </ul>
+    <h3>Ganti Password</h3>
+    <ol>
+      <li>Masukkan <strong>password saat ini</strong>.</li>
+      <li>Masukkan <strong>password baru</strong> dan konfirmasikan (min. 8 karakter).</li>
+      <li>Simpan perubahan.</li>
+    </ol>
+    <p>Tab <strong>Informasi Website</strong> hanya tampil bagi Super Admin.</p>
+
+    <a class="back-to-top" href="#daftar-isi">↑ Kembali ke Daftar Isi</a>
+    <div class="doc-footer"><span>Bab 3 — Panduan Administrator</span><span>MinhajPeduli v1.0</span></div>
+  </section>
+
+  <!-- ============ BAB 4 ============ -->
+  <section class="content section" id="bab4">
+    <div class="topbar no-print">
+      <span class="mini">Manual Pengguna MinhajPeduli</span>
+      <a class="back" href="#daftar-isi">↑ Daftar Isi</a>
+    </div>
+
+    <h1 class="bab"><span class="num">Bab 4</span>Panduan di Perangkat Mobile</h1>
+    <p>Seluruh halaman — publik maupun panel admin — dapat diakses dari ponsel atau tablet. Tampilannya menyesuaikan ukuran layar (responsif).</p>
+
+    <h2 id="b4-1">4.1 Menu Navigasi Pengunjung</h2>
+    <p>Pada layar sempit, menu navigasi atas (Beranda, Tentang, Laporan Keuangan, Donasi) dirapatkan ke dalam satu tombol.</p>
+    <ol class="steps">
+      <li>Klik tombol <strong>☰ (garis tiga)</strong> di pojok kanan atas halaman.</li>
+      <li>Menu turun akan tampil berisi seluruh tautan navigasi.</li>
+      <li>Pilih tujuan — menu menutup otomatis setelah tautan diklik.</li>
+    </ol>
+    <figure>
+      <img src="screenshots/09-mobile-menu.png" alt="Menu mobile pengunjung">
+      <figcaption><b>Gambar 4.1</b> — Menu navigasi pengunjung pada layar ponsel (hamburger).</figcaption>
+    </figure>
+
+    <h2 id="b4-2">4.2 Drawer Menu Admin</h2>
+    <p>Panel admin di ponsel tidak lagi memampatkan konten — sidebar bersembunyi dan muncul sebagai laci (drawer) saat diminta.</p>
+    <ol class="steps">
+      <li>Klik tombol <strong>☰</strong> di kiri atas header panel.</li>
+      <li>Sidebar akan meluncur dari kiri beserta latar belakang gelap.</li>
+      <li>Pilih menu yang diinginkan — sidebar menutup otomatis saat berpindah halaman.</li>
+      <li>Tutup dengan mengklik area gelap di sebelah kanan sidebar.</li>
+    </ol>
+    <figure>
+      <img src="screenshots/18-admin-mobile-drawer.png" alt="Drawer sidebar admin di mobile">
+      <figcaption><b>Gambar 4.2</b> — Sidebar admin terbuka sebagai drawer pada layar ponsel.</figcaption>
+    </figure>
+    <div class="box tip">
+      <div class="title">ℹ️ Tips Verifikasi di Ponsel</div>
+      <p>Bukti transfer dapat diperbesar dengan mengetuk gambar. Untuk verifikasi nominal besar, disarankan memakai layar yang lebih besar agar detail struk terbaca jelas.</p>
+    </div>
+
+    <a class="back-to-top" href="#daftar-isi">↑ Kembali ke Daftar Isi</a>
+    <div class="doc-footer"><span>Bab 4 — Panduan di Perangkat Mobile</span><span>MinhajPeduli v1.0</span></div>
+  </section>
+
+  <!-- ============ BAB 5 ============ -->
+  <section class="content section" id="bab5">
+    <div class="topbar no-print">
+      <span class="mini">Manual Pengguna MinhajPeduli</span>
+      <a class="back" href="#daftar-isi">↑ Daftar Isi</a>
+    </div>
+
+    <h1 class="bab"><span class="num">Bab 5</span>Pemecahan Masalah &amp; Tanya Jawab</h1>
+
+    <h2 id="b5-1">5.1 Tanya Jawab (FAQ)</h2>
+    <table>
+      <thead><tr><th style="width:38%">Pertanyaan</th><th>Jawaban</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Saya sudah transfer, tetapi donasi masih "pending". Kenapa?</strong></td>
+          <td>Donasi diverifikasi <em>manual</em> oleh pengelola. Status <em>pending</em> berarti bukti Anda menunggu pemeriksaan. Simpan nomor invoice dan hubungi pengelola bila perlu konfirmasi cepat.</td>
+        </tr>
+        <tr>
+          <td><strong>Bagaimana cara mengecek apakah donasi saya sudah diterima?</strong></td>
+          <td>Donasi yang diterima tampil pada halaman <strong>Laporan Keuangan</strong> (mutasi terakhir) sesuai nama Anda. Saat ini belum ada halaman pelacakan status khusus donatur — karena itu <strong>simpan nomor invoice</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Saya salah memasukkan nominal. Bisa diperbaiki?</strong></td>
+          <td>Hubungi pengelola. Pengelola dapat mengoreksi nominal donasi (minimal Rp 1.000) dari halaman detail donasi.</td>
+        </tr>
+        <tr>
+          <td><strong>Bukti pembayaran gagal diunggah. Kenapa?</strong></td>
+          <td>Pastikan berkas berformat <strong>.jpg / .jpeg / .png</strong> dan ukurannya di bawah <strong>2 MB</strong>. Ubah tangkapan layar menjadi JPG atau kompres gambarnya, lalu unggah ulang.</td>
+        </tr>
+        <tr>
+          <td><strong>Saya centang "Sembunyikan nama saya", tetapi kenapa tetap muncul nama?</strong></td>
+          <td>Jika centang <em>tidak</em> dicentang, nama tampil apa adanya. Dengan centang aktif, nama diganti menjadi <strong>"Hamba Allah"</strong>. Pastikan mencentang opsi tersebut pada formulir donasi.</td>
+        </tr>
+        <tr>
+          <td><strong>Perlu mentransfer kode unik juga?</strong></td>
+          <td><strong>Tidak.</strong> Kode unik hanya penanda transaksi. Transfer sesuai nominal donasi saja.</td>
+        </tr>
+        <tr>
+          <td><strong>Kenapa saya tidak bisa login admin?</strong></td>
+          <td>Periksa email &amp; password. Setelah <strong>5 kali</strong> salah, akun dikunci sementara oleh sistem. Gunakan <em>Lupa Password</em> bila perlu. Akun berstatus <em>pending</em> juga belum bisa login sampai disetujui Super Admin.</td>
+        </tr>
+        <tr>
+          <td><strong>Email reset password tidak masuk.</strong></td>
+          <td>Cek folder <strong>Spam/Junk</strong>. Pastikan email yang dimasukkan sama persis dengan email terdaftar pada akun admin.</td>
+        </tr>
+        <tr>
+          <td><strong>Tombol QRIS tidak muncul.</strong></td>
+          <td>Fitur QRIS belum dikonfigurasi pengelola. Gunakan <strong>transfer bank</strong> seperti panduan pada bagian 2.4.</td>
+        </tr>
+        <tr>
+          <td><strong>Program saya terhapus dari website.</strong></td>
+          <td>Menghapus program menghapus seluruh donasinya secara permanen. Konfirmasikan dulu dengan Super Admin sebelum menghapus. Bila terlanjur, program harus dibuat ulang.</td>
+        </tr>
+        <tr>
+          <td><strong>Apakah ada biaya layanan?</strong></td>
+          <td>Tidak ada potongan dari sistem. Transfer mengikuti ketentuan bank Anda masing-masing.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="b5-2">5.2 Pesan Error yang Sering Muncul</h2>
+    <table>
+      <thead><tr><th style="width:42%">Pesan Error</th><th>Penyebab &amp; Solusi</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><em>"These credentials do not match our records."</em></td>
+          <td>Email atau password salah. Periksa kembali; gunakan <em>Lupa Password</em> bila perlu.</td>
+        </tr>
+        <tr>
+          <td><em>"Akun admin Anda masih menunggu persetujuan Super Admin."</em></td>
+          <td>Akun berstatus <em>pending</em>. Hubungi Super Admin untuk menyetujui (bagian 3.9).</td>
+        </tr>
+        <tr>
+          <td><em>"Mohon masukkan nominal donasi minimal Rp 10.000…"</em></td>
+          <td>Nominal terlalu kecil. Masukkan minimal Rp 10.000.</td>
+        </tr>
+        <tr>
+          <td>Peringatan merah di bawah kolom formulir</td>
+          <td>Kolom wajib belum diisi atau formatnya salah (mis. email bukan format email). Lengkapi kolom bertanda <strong>*</strong>.</td>
+        </tr>
+        <tr>
+          <td>Gambar bukti/gambar program ditolak</td>
+          <td>Format harus .jpg/.jpeg/.png dan maksimal <strong>2 MB</strong> (foto profil admin maksimal 1 MB).</td>
+        </tr>
+        <tr>
+          <td>Halaman tampil kosong / gagal muat</td>
+          <td>Segarkan halaman (F5 / tombol muat ulang). Jika berlanjut, bersihkan cache browser atau gunakan peramban lain.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="b5-3">5.3 Keamanan Akun</h2>
+    <ul>
+      <li>Gunakan password minimal 8 karakter — kombinasi huruf dan angka disarankan.</li>
+      <li>Jangan membagikan password panel admin kepada pihak lain.</li>
+      <li>Logout dari perangkat publik setelah selesai bekerja (menu <strong>Logout</strong> pada sidebar).</li>
+      <li>Simpan bukti transfer donasi Anda sampai status terkonfirmasi.</li>
+    </ul>
+
+    <a class="back-to-top" href="#daftar-isi">↑ Kembali ke Daftar Isi</a>
+    <div class="doc-footer"><span>Bab 5 — Pemecahan Masalah &amp; Tanya Jawab</span><span>MinhajPeduli v1.0</span></div>
+  </section>
+
+  <!-- ============ LAMPIRAN A ============ -->
+  <section class="content section" id="lampiran-a">
+    <div class="topbar no-print">
+      <span class="mini">Manual Pengguna MinhajPeduli</span>
+      <a class="back" href="#daftar-isi">↑ Daftar Isi</a>
+    </div>
+
+    <h1 class="bab"><span class="num">Lampiran A</span>Aturan Validasi Lengkap</h1>
+    <p>Ringkasan seluruh aturan validasi sistem untuk rujukan pengelola dan donatur.</p>
+    <table>
+      <thead><tr><th style="width:30%">Objek</th><th style="width:44%">Aturan</th><th>Keterangan</th></tr></thead>
+      <tbody>
+        <tr><td>Nominal donasi</td><td>Wajib, angka, <strong>minimal Rp 10.000</strong></td><td>Berlaku di sisi website &amp; server.</td></tr>
+        <tr><td>Data donatur</td><td>Nama &amp; email wajib (maks. 255 karakter); telepon wajib (maks. 20 karakter); doa opsional</td><td>Email harus berformat email.</td></tr>
+        <tr><td>Bukti pembayaran (donatur)</td><td>Wajib · gambar · .jpg/.jpeg/.png · <strong>maks. 2 MB</strong></td><td>Disimpan pada server yayasan.</td></tr>
+        <tr><td>Bukti pembayaran (admin)</td><td>.jpeg/.png/.jpg · maks. 2 MB</td><td>Ganti bukti dari halaman detail.</td></tr>
+        <tr><td>Gambar program</td><td>Wajib saat tambah · .jpg/.jpeg/.png · maks. 2 MB</td><td>Saat edit, gambar bersifat opsional (pertahankan lama).</td></tr>
+        <tr><td>Foto profil admin</td><td>.jpg/.jpeg/.png · maks. 1 MB</td><td>Pengaturan → Profil Admin.</td></tr>
+        <tr><td>Target program</td><td>Wajib, angka, ≥ 0</td><td>Dalam Rupiah.</td></tr>
+        <tr><td>Koreksi nominal (admin)</td><td>Angka, <strong>minimal Rp 1.000</strong></td><td>Ikon pensil pada tabel donasi.</td></tr>
+        <tr><td>Status donasi</td><td><em>pending</em> · <em>paid</em> · <em>failed</em></td><td>Hanya <em>paid</em> yang dihitung statistik/laporan.</td></tr>
+        <tr><td>Password admin</td><td>Minimal <strong>8 karakter</strong>, konfirmasi ganda</td><td>Berlaku untuk tambah admin, ajukan akses, dan ganti/reset password.</td></tr>
+        <tr><td>Pengeluaran</td><td>Judul, kategori, nominal (≥ 0), tanggal wajib</td><td>Kategori: Operasional · Konsumsi · Pendidikan · Program · Lainnya.</td></tr>
+        <tr><td>Login admin</td><td>Maks. <strong>5 percobaan</strong> per email</td><td>Setelah itu terkunci sementara.</td></tr>
+      </tbody>
+    </table>
+
+    <h1 class="bab" id="lampiran-b" style="margin-top:44px"><span class="num">Lampiran B</span>Ringkasan Rekening Yayasan</h1>
+    <table>
+      <tbody>
+        <tr><th style="width:34%">Bank</th><td><strong>BANK BTN SYARIAH</strong></td></tr>
+        <tr><th>Nomor Rekening</th><td><strong>20022284222</strong></td></tr>
+        <tr><th>Atas Nama</th><td><strong>Yayasan Minhajul Misbah Al Jadid</strong></td></tr>
+        <tr><th>QRIS</th><td>Belum dikonfigurasi (nonaktif) — gunakan transfer bank.</td></tr>
+        <tr><th>Website</th><td>pesantrenalminhaj.com</td></tr>
+      </tbody>
+    </table>
+    <div class="box warn">
+      <div class="title">⚠️ Verifikasi Sebelum Transfer</div>
+      <p>Selalu cocokkan nomor rekening di atas dengan yang tampil pada halaman pembayaran sistem sebelum mentransfer dana.</p>
+    </div>
+
+    <div class="box tip">
+      <div class="title">ℹ️ Tentang Dokumen Ini</div>
+      <p>Manual Pengguna MinhajPeduli <strong>Versi 1.0</strong> — Oktober 2026. Disusun untuk keperluan penggunaan website donasi Pondok Pesantren Al-Minhaj. Untuk mencetak: buka file ini di peramban, tekan <strong>Ctrl+P</strong> (Windows) atau <strong>Cmd+P</strong> (Mac), lalu pilih <em>Save as PDF</em>.</p>
+    </div>
+
+    <a class="back-to-top" href="#daftar-isi">↑ Kembali ke Daftar Isi</a>
+    <div class="doc-footer"><span>Lampiran</span><span>MinhajPeduli v1.0 — © 2026 Yayasan Minhajul Misbah Al Jadid</span></div>
+  </section>
+
+</div>
+</body>
+</html>

@@ -70,10 +70,10 @@ export default function DonasiDetail({ donation }) {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                        <div className="flex justify-between items-start mb-6">
+                    <div className="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-gray-100">
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
                             <div>
-                                <h2 className="text-2xl font-bold text-gray-800">{donation.invoice_no}</h2>
+                                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 break-words">{donation.invoice_no}</h2>
                                 <p className="text-gray-500 italic">Dibuat pada {donation.date}</p>
                             </div>
                             <span className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm ${statusBadgeClass}`}>
@@ -170,9 +170,9 @@ export default function DonasiDetail({ donation }) {
                 </div>
 
                 <div className="space-y-6">
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center sticky top-6">
+                    <div className="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-gray-100 text-center lg:sticky lg:top-6">
                         <p className="text-gray-500 mb-2">Total Donasi</p>
-                        <h1 className="text-4xl font-black text-green-600 mb-6">
+                        <h1 className="text-2xl sm:text-4xl font-black text-green-600 mb-6 break-words">
                             {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(donation.nominal)}
                         </h1>
 

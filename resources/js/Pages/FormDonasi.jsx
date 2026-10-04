@@ -261,10 +261,10 @@ function FormDonasi({ auth, program_id, program, nominal, errors = {} }) {
                                     <p className="text-green-600 font-bold mb-1">
                                         Donasi
                                     </p>
-                                    <h3 className="text-md font-semibold text-gray-800 mb-4">
+                                    <h3 className="text-md font-semibold text-gray-800 mb-4 break-words">
                                         {programUsed.title}
                                     </h3>
-                                    <div className="flex justify-between items-center border-t border-gray-300 pt-3">
+                                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-300 pt-3">
                                         <span className="font-bold text-gray-700">
                                             Total Donasi
                                         </span>
@@ -290,17 +290,17 @@ function FormDonasi({ auth, program_id, program, nominal, errors = {} }) {
                                             defaultChecked
                                             className="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300"
                                         />
-                                        <div className="flex-1">
+                                        <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-1">
-                                                <div className="font-bold text-blue-900 italic text-lg">
+                                                <div className="font-bold text-blue-900 italic text-lg truncate">
                                                     {bankName}
                                                 </div>
                                             </div>
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-xs text-gray-500 truncate">
                                                 An. {accountName}
                                             </p>
                                         </div>
-                                        <span className="font-bold text-gray-500 text-sm">
+                                        <span className="hidden sm:inline font-bold text-gray-500 text-sm">
                                             {bankName}
                                         </span>
                                     </div>

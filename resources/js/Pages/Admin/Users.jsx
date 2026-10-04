@@ -149,7 +149,7 @@ export default function Users({ users = [] }) {
 
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full text-left text-sm">
+                    <table className="min-w-[900px] w-full text-left text-sm">
                         <thead className="bg-gray-50 text-gray-500 uppercase text-[10px] tracking-widest">
                             <tr>
                                 <th className="px-5 py-3">Nama</th>
