@@ -307,6 +307,22 @@ public function paymentForm(Request $request, $programId)
     }
 
     /**
+     * Konfirmasi via tombol "Sudah sesuai nominal" — laporan pembayaran tanpa
+     * form dan tanpa upload bukti. Donatur menyatakan sudah transfer sesuai
+     * nominal; donasi tetap status 'pending' menunggu verifikasi admin.
+     * payment_date + bank_owner diisi sebagai penanda donatur sudah melapor.
+     */
+    public function confirmExact(Donation $donation)
+    {
+        $donation->update([
+            'payment_date' => now()->toDateString(),
+            'bank_owner' => $donation->name,
+        ]);
+
+        return redirect()->route('donasi.bayar', $donation->id);
+    }
+
+    /**
      * Menampilkan halaman konfirmasi pembayaran manual (form upload bukti transfer)
      */
     public function konfirmasiManual($donationId)

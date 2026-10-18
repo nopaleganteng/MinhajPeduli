@@ -1,6 +1,7 @@
 import { Head, Link, router } from "@inertiajs/react";
 import ProgressBar from "../Components/ProgressBar";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, Check } from "lucide-react";
+import { useState } from "react";
 
 export default function PembayaranDonasi({ auth, id, programTitle, bank, donationData }) {
     // Pastikan props diterima dengan benar
@@ -74,6 +75,31 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
         }
         // Arahkan langsung ke halaman konfirmasi untuk donationId
         router.get(route("donasi.konfirmasi", { id: donationId }));
+    };
+
+    const [showDoneModal, setShowDoneModal] = useState(false);
+
+    // "Sudah sesuai nominal": pembayaran dinyatakan selesai langsung,
+    // tanpa mengisi form konfirmasi lagi
+    const handleExactPayment = () => {
+        const donationId = data?.id;
+        if (!donationId) {
+            alert(
+                "Donation ID tidak tersedia. Mohon muat ulang halaman atau hubungi admin.",
+            );
+            return;
+        }
+        router.post(
+            route("donasi.selesai", { donation: donationId }),
+            {},
+            {
+                onSuccess: () => setShowDoneModal(true),
+                onError: () =>
+                    alert(
+                        "Terjadi kesalahan saat mengirim konfirmasi. Coba lagi.",
+                    ),
+            },
+        );
     };
 
     // Fallback jika data tidak ada
@@ -301,7 +327,7 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
                         </button>
 
                         <button
-                            onClick={handleManualConfirmation}
+                            onClick={handleExactPayment}
                             className="bg-[#4ade80] hover:bg-green-500 text-white font-bold py-3 px-8 rounded-full shadow-md w-full md:w-auto text-center transition transform active:scale-95"
                         >
                             Sudah sesuai nominal
@@ -373,6 +399,30 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
                     </div>
                 </footer>
             </div>
+
+            {/* Modal Sukses "Sudah sesuai nominal" */}
+            {showDoneModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4">
+                    <div className="bg-white rounded-xl p-8 max-w-sm w-full text-center shadow-2xl">
+                        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Check size={32} strokeWidth={3} />
+                        </div>
+                        <h2 className="text-xl font-bold mb-2">
+                            Terima Kasih!
+                        </h2>
+                        <p className="text-gray-600 mb-6 text-sm">
+                            Konfirmasi pembayaran Anda telah kami terima dan
+                            akan segera diverifikasi.
+                        </p>
+                        <button
+                            onClick={() => router.visit("/")}
+                            className="w-full bg-sky-500 text-white py-2 rounded-lg font-bold"
+                        >
+                            Oke
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

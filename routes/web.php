@@ -155,6 +155,10 @@ Route::get('/donasi/{id}/konfirmasi', [DonationController::class, 'konfirmasiMan
 Route::post('/donasi/konfirmasi-proses', [DonationController::class, 'confirm'])
     ->name('donasi.confirm');
 
+// Route POST untuk tombol "Sudah sesuai nominal" — selesai tanpa form/bukti
+Route::post('/donasi/{donation}/selesai', [DonationController::class, 'confirmExact'])
+    ->name('donasi.selesai');
+
 // Rute Detail Donasi (Public)
 Route::get('/donasi/{id}', [DonationController::class, 'show'])->name('donasi.show');
 

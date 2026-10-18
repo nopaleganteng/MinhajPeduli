@@ -19,5 +19,5 @@ return [
     'bank_name' => 'BTN Syariah',
     'account_number' => '20022284222',
     'account_name' => 'Yayasan Minhajul Misbah Al Jadid',
-    'qris_image' => null,
+    'qris_image' => '/images/qris-yayasan.jpg',
 ];
