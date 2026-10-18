@@ -1,7 +1,7 @@
 import { Head, Link, router } from "@inertiajs/react";
 import ProgressBar from "../Components/ProgressBar";
-import { MapPin, Phone, Mail, Check } from "lucide-react";
-import { useState } from "react";
+import { MapPin, Phone, Mail, Check, ZoomIn, ZoomOut, RotateCcw, X } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export default function PembayaranDonasi({ auth, id, programTitle, bank, donationData }) {
     // Pastikan props diterima dengan benar
@@ -78,6 +78,30 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
     };
 
     const [showDoneModal, setShowDoneModal] = useState(false);
+
+    // Zoom QRIS (lightbox)
+    const [showQrisZoom, setShowQrisZoom] = useState(false);
+    const [qrisZoom, setQrisZoom] = useState(1);
+
+    const openQrisZoom = () => {
+        setQrisZoom(1);
+        setShowQrisZoom(true);
+    };
+
+    const closeQrisZoom = () => setShowQrisZoom(false);
+
+    const zoomIn = () => setQrisZoom((z) => Math.min(4, z * 1.5));
+    const zoomOut = () => setQrisZoom((z) => Math.max(0.5, z / 1.5));
+
+    // Tutup overlay dengan tombol Esc
+    useEffect(() => {
+        if (!showQrisZoom) return;
+        const onKey = (e) => {
+            if (e.key === "Escape") setShowQrisZoom(false);
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [showQrisZoom]);
 
     // "Sudah sesuai nominal": pembayaran dinyatakan selesai langsung,
     // tanpa mengisi form konfirmasi lagi
@@ -255,8 +279,12 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
                                         <img
                                             src={qrisImage}
                                             alt="QRIS Yayasan"
-                                            className="w-44 sm:w-56 h-auto object-contain mx-auto"
+                                            onClick={openQrisZoom}
+                                            className="w-44 sm:w-56 h-auto object-contain mx-auto cursor-zoom-in"
                                         />
+                                        <p className="text-xs text-gray-500 italic mt-2">
+                                            Ketuk gambar untuk memperbesar
+                                        </p>
                                     </div>
                                 )}
                             </div>
@@ -400,8 +428,63 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
                 </footer>
             </div>
 
-            {/* Modal Sukses "Sudah sesuai nominal" */}
-            {showDoneModal && (
+            {/* Overlay Zoom QRIS */}
+            {showQrisZoom && (
+                <div
+                    className="fixed inset-0 z-[110] bg-black/85 flex flex-col"
+                    onClick={closeQrisZoom}
+                >
+                    <div
+                        className="flex items-center justify-center gap-2 px-4 py-3 bg-black/60"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            onClick={zoomOut}
+                            aria-label="Perkecil"
+                            className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition"
+                        >
+                            <ZoomOut size={20} />
+                        </button>
+                        <span className="text-white text-sm font-semibold w-14 text-center tabular-nums">
+                            {Math.round(qrisZoom * 100)}%
+                        </span>
+                        <button
+                            onClick={zoomIn}
+                            aria-label="Perbesar"
+                            className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition"
+                        >
+                            <ZoomIn size={20} />
+                        </button>
+                        <button
+                            onClick={() => setQrisZoom(1)}
+                            aria-label="Reset zoom"
+                            className="ml-2 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition"
+                        >
+                            <RotateCcw size={18} />
+                        </button>
+                        <button
+                            onClick={closeQrisZoom}
+                            aria-label="Tutup"
+                            className="ml-auto p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+                    <div
+                        className={`flex-1 overflow-auto p-4 flex items-start ${qrisZoom > 1 ? "justify-start" : "justify-center"}`}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <img
+                            src={qrisImage}
+                            alt="QRIS Yayasan (zoom)"
+                            style={{ width: `${qrisZoom * 100}%` }}
+                            className="max-w-none shrink-0 h-auto rounded-lg shadow-2xl"
+                        />
+                    </div>
+                </div>
+            )}
+
+            {/* Modal Sukses "Sudah sesuai nominal" */}            {showDoneModal && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4">
                     <div className="bg-white rounded-xl p-8 max-w-sm w-full text-center shadow-2xl">
                         <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
