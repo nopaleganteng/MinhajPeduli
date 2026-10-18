@@ -285,6 +285,14 @@ export default function PembayaranDonasi({ auth, id, programTitle, bank, donatio
                                         <p className="text-xs text-gray-500 italic mt-2">
                                             Ketuk gambar untuk memperbesar
                                         </p>
+                                        <a
+                                            href={qrisImage}
+                                            download="QRIS-Minhaj.jpg"
+                                            className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-green-700 hover:text-green-800 underline"
+                                        >
+                                            <Download size={16} />
+                                            Unduh gambar QRIS
+                                        </a>
                                     </div>
                                 )}
                             </div>
